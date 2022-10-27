@@ -1,0 +1,9 @@
+{
+    "catcher": {
+        "licenseCode": "your-cdm-licenseCode",
+        "serverUrl": "http://serverXXXXX.contentdm.oclc.org:8888",
+        "username": "youruser",
+        "password": "yourpassword",
+        "endpoint": "whatever.wsdl"
+    }
+}
