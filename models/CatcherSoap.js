@@ -12,6 +12,8 @@ class CatcherSoap {
     console.log(
       'edit' + cdmNumber + ' field: ' + fieldname + ' to be: ' + value
     );
+    // return transaction id or error message
+    return 'done';
   }
 }
 
