@@ -1,5 +1,5 @@
-let GetGSheetCsvUrl = require('../GetGSheetCsvUrl');
-let getter = new GetGSheetCsvUrl();
+const GetGSheetCsvUrl = require('../GetGSheetCsvUrl');
+const getter = new GetGSheetCsvUrl();
 
 describe('GetGSheetCsvUrl', () => {
   describe('getCsvUrl', () => {
