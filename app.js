@@ -5,8 +5,10 @@ let conf = config.get('catcher');
 
 let catcher = new CatcherSoap(conf);
 
-let cdmNumber = 1;
 let fieldname = 'identi';
-let value = 'i like fish';
-let res = catcher.DoEditRequest(cdmNumber, fieldname, value);
+let cdmAlias = "/BowdenTest";
+let cdmNumber = 7;
+let value = 'horse in the house';
+
+let res = catcher.DoEditRequest(cdmAlias, fieldname, cdmNumber, value);
 console.log(res);
