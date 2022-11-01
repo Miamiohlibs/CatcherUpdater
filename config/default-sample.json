@@ -4,6 +4,6 @@
         "serverUrl": "http://serverXXXXX.contentdm.oclc.org:8888",
         "username": "youruser",
         "password": "yourpassword",
-        "endpoint": "whatever.wsdl"
+        "endpoint": "https://worldcat.org/webservices/contentdm/catcher/6.0/CatcherService.wsdl"
     }
 }
