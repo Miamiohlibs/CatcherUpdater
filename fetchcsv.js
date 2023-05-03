@@ -1,16 +1,21 @@
 const axios = require('axios');
-const csvjson = require('csvjson');
+const csv = require('@fast-csv/parse');
 
-let sheetId = '135kcWLvG2aGCIfTlF2LDej2vhZjBLPfgh-MobEscGSg'; // Amber's Test
-// let sheetId = '14seQgOZq8dokT1ogG5KuQQHYS6KJYf2xz7IwIcyuGY8'; // Ken Test
+let sheetId = '1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp'; // May 2023 test set
 let url =
   'https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv';
 
 (async () => {
   let res = await axios.get(url);
-  let opt = {
-    delimiter: ',',
-    quote: '"',
-  };
-  console.log(JSON.stringify(csvjson.toObject(res.data, opt), null, 2));
+  let data = csv.parseString(res.data, { headers: true });
+  data.forEach((row) => {
+    // console.log(row);
+    let fieldname = 'identi';
+    let cdmAlias = '/BowdenTest';
+    let cdmNumber = row['CONTENTdm number'];
+    let value = row['Identifier'];
+    console.log(fieldname, cdmAlias, cdmNumber, value);
+  });
+
+  // console.log(JSON.stringify(data, null, 2));
 })();
