@@ -6,9 +6,9 @@ let conf = config.get('catcher');
 let catcher = new CatcherSoap(conf);
 
 let fieldname = 'identi';
-let cdmAlias = "/BowdenTest";
-let cdmNumber = 7;
-let value = 'horse in the house';
+let cdmAlias = '/BowdenTest';
+// let cdmNumber = 608;
+let cdmNumber = '12/01/2020';
+let value = 'B-KY-PAR1-9_KenTest';
 
-let res = catcher.DoEditRequest(cdmAlias, fieldname, cdmNumber, value);
-console.log(res);
+catcher.DoEditRequest(cdmAlias, fieldname, cdmNumber, value);
