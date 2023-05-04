@@ -61,6 +61,10 @@ class CatcherSoap {
       });
     });
   }
+  cleanSoapResponse(msg) {
+    msg = msg.replace(/Warning: This service.*/, '');
+    return msg;
+  }
 }
 
 module.exports = CatcherSoap;

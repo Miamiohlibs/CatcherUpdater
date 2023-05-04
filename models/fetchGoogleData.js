@@ -1,9 +1,8 @@
 const axios = require('axios');
-// const csv = require('@fast-csv/parse');
 const Papa = require('papaparse');
 
-const fetchGoogleData = async () => {
-  let sheetId = '1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp'; // May 2023 test set
+const fetchGoogleData = async (sheetId) => {
+  // let sheetId = ; // May 2023 test set
   let url =
     'https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv';
   //   let res = await axios.get(url);
