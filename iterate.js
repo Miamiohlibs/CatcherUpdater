@@ -1,19 +1,12 @@
 const fetchGoogleData = require('./models/fetchGoogleData');
+const asyncForEach = require('./utilities/asyncForEach');
 const config = require('config');
-const axios = require('axios');
-const csv = require('@fast-csv/parse');
 const CatcherSoap = require('./models/CatcherSoap');
 let conf = config.get('catcher');
 
 let catcher = new CatcherSoap(conf);
 let successes = [];
 let failures = [];
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
 
 const start = async () => {
   // get data from google sheet
@@ -29,13 +22,13 @@ const start = async () => {
     let cdmNumber = row['CONTENTdm number'];
     let value = row['Identifier'];
     try {
-      let res = await catcher.DoEditRequest(
-        cdmAlias,
-        fieldname,
-        cdmNumber,
-        value
-      );
-      // let res = cdmAlias + fieldname + cdmNumber + value;
+      // let res = await catcher.DoEditRequest(
+      //   cdmAlias,
+      //   fieldname,
+      //   cdmNumber,
+      //   value
+      // );
+      let res = cdmAlias + fieldname + cdmNumber + value;
       successes.push(res);
     } catch (err) {
       failures.push(err);
