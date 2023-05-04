@@ -1,5 +1,7 @@
-const waitFor = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const fetchGoogleData = require('./models/fetchGoogleData');
 const config = require('config');
+const axios = require('axios');
+const csv = require('@fast-csv/parse');
 const CatcherSoap = require('./models/CatcherSoap');
 let conf = config.get('catcher');
 
@@ -13,28 +15,15 @@ async function asyncForEach(array, callback) {
   }
 }
 
-let data = [
-  {
-    Title: "Murray State Teachers' College",
-    Identifier: 'B-KY-MUR1-8',
-    'CONTENTdm number': '636',
-  },
-  {
-    Title: 'Recto',
-    Identifier: 'B-KY-MUR1-8_Recto',
-    'CONTENTdm number': '637',
-  },
-  {
-    Title: 'Verso',
-    Identifier: 'B-KY-MUR1-8_Verso',
-    'CONTENTdm number': '638',
-  },
-];
-
 const start = async () => {
+  // get data from google sheet
+  let data = await fetchGoogleData();
+  // console.log(data);
+  data = data.filter((row) => row['CONTENTdm number'] > 630);
+
   await asyncForEach(data, async (row) => {
     // await waitFor(1000);
-    // console.log(row.Identifier);
+    console.log(row.Identifier);
     let fieldname = 'identi';
     let cdmAlias = '/BowdenTest';
     let cdmNumber = row['CONTENTdm number'];
@@ -46,6 +35,7 @@ const start = async () => {
         cdmNumber,
         value
       );
+      // let res = cdmAlias + fieldname + cdmNumber + value;
       successes.push(res);
     } catch (err) {
       failures.push(err);
@@ -57,8 +47,3 @@ const start = async () => {
 };
 
 start();
-
-// (async () => {
-//   await sleep(1000);
-//   console.log('done');
-// })();
