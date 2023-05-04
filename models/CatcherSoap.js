@@ -3,7 +3,7 @@ const soap = require('soap');
 class CatcherSoap {
   constructor(conf) {
     this.license = conf.licenseCode;
-    // this.serverUrl = conf.serverUrl;
+    this.serverUrl = conf.serverUrl;
     this.endpoint = conf.endpoint;
     this.username = conf.username;
     this.password = conf.password;
