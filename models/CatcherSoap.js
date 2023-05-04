@@ -37,20 +37,23 @@ class CatcherSoap {
     return args;
   }
 
-  DoEditRequest(cdmAlias, fieldname, cdmNumber, value) {
+  async DoEditRequest(cdmAlias, fieldname, cdmNumber, value) {
+    let url = this.endpoint;
+    let args = this.CreateEditArgs(cdmAlias, fieldname, cdmNumber, value);
+    let querySummary =
+      'edit ' + cdmNumber + ' field: ' + fieldname + ' to be: ' + value;
+    return await this.DoSoapRequest(url, args, querySummary);
+  }
+
+  DoSoapRequest(url, args, querySummary) {
     return new Promise((resolve, reject) => {
-      let url = this.endpoint;
-      let args = this.CreateEditArgs(cdmAlias, fieldname, cdmNumber, value);
       soap.createClient(url, {}, function (err, client) {
         client.processCONTENTdm(args, function (err, result) {
           // console.log(result);
-          let editSummary =
-            'edit ' + cdmNumber + ' field: ' + fieldname + ' to be: ' + value;
-          // let returnObject = { result, editSummary, err };
           if (result.return.includes('Error')) {
-            return reject({ msg: result.return, query: editSummary });
+            return reject({ msg: result.return, query: querySummary });
           } else {
-            return resolve({ msg: result.return, query: editSummary });
+            return resolve({ msg: result.return, query: querySummary });
           }
         });
         //prints out generated xml for debugging (turn off for prod)
@@ -59,4 +62,5 @@ class CatcherSoap {
     });
   }
 }
+
 module.exports = CatcherSoap;
