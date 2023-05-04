@@ -11,4 +11,19 @@ let cdmAlias = '/BowdenTest';
 let cdmNumber = '12/01/2020';
 let value = 'B-KY-PAR1-9_KenTest';
 
-catcher.DoEditRequest(cdmAlias, fieldname, cdmNumber, value);
+(async () => {
+  try {
+    let res = await catcher.DoEditRequest(
+      cdmAlias,
+      fieldname,
+      cdmNumber,
+      value
+    );
+    console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
+  //   console.log(catcher.editSuccesses);
+  //   console.log('-------------------');
+  //   console.log(catcher.editFailures);
+})();
