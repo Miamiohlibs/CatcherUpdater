@@ -97,9 +97,9 @@ const start = async ({
     }
   }
   if (failures.length > 0) {
-    failures.map((failure) => {
-      failure.success = false;
-      failure.batch = batchNumber;
+    failures.map((item) => {
+      item.success = false;
+      item.batch = batchNumber;
       item.collectionAlias = cdmAlias.substr(1);
     });
     if (mode === 'edit') {
