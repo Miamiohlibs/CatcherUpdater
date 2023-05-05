@@ -18,6 +18,10 @@ const TransactionsSchema = new Scheme({
     type: String,
     required: true,
   },
+  collectionAlias: {
+    type: String,
+    required: true,
+  },
   created: { type: Date, default: Date.now },
 });
 
