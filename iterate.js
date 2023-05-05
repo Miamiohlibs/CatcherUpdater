@@ -5,6 +5,7 @@ const CatcherSoap = require('./models/CatcherSoap');
 let conf = config.get('catcher');
 const TransactionApi = require('./models/transactions/TransactionApi');
 const transactionApi = new TransactionApi();
+const colors = require('colors');
 
 let setup = {
   // mode: 'edit', // edit mode makes changes to ContentDM
@@ -99,6 +100,8 @@ const start = async ({
   console.log(successes);
   console.log('-------------------');
   console.log(failures);
+  console.log(`Successes: ${successes.length}`.green);
+  console.log(`Failures: ${failures.length}`.yellow);
   process.exit();
 };
 
