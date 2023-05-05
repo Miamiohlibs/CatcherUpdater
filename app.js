@@ -1,29 +1,26 @@
-const config = require('config');
-const CatcherSoap = require('./models/CatcherSoap');
-let conf = config.get('catcher');
-// console.log(conf);
+const CatcherEditService = require('./services/CatcherEditService');
 
-let catcher = new CatcherSoap(conf);
-
-let fieldname = 'identi';
-let cdmAlias = '/BowdenTest';
-// let cdmNumber = 608;
-let cdmNumber = '12/01/2020';
-let value = 'B-KY-PAR1-9_KenTest';
+let setup = {
+  mode: 'edit', // edit mode makes changes to ContentDM
+  //   mode: 'testing', // testing mode lists changes but does not make them
+  sheetId: '1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp',
+  fieldName: 'identi',
+  fieldLabelInSheet: 'Identifier',
+  cdmAlias: '/BowdenTest',
+  firstCdmNumber: 528,
+  lastCdmNumber: 529,
+  // firstSheetRow: 2,
+  // lastSheetRow: 5,
+};
 
 (async () => {
-  try {
-    let res = await catcher.DoEditRequest(
-      cdmAlias,
-      fieldname,
-      cdmNumber,
-      value
-    );
-    console.log(res);
-  } catch (err) {
-    console.log(err);
-  }
-  //   console.log(catcher.editSuccesses);
-  //   console.log('-------------------');
-  //   console.log(catcher.editFailures);
+  const editor = new CatcherEditService(setup);
+  await editor.fetchGoogleData();
+  console.log(editor.data.length);
+  editor.dataFilter();
+  console.log(editor.data.length);
+  await editor.sendCatcherRequests();
+  editor.prepResponseStats();
+  await editor.logResponsesToDatabase();
+  editor.logResponseToConsole();
 })();
