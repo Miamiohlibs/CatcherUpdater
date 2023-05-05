@@ -12,9 +12,10 @@ let setup = {
   // mode: 'testing', // testing mode lists changes but does not make them
   sheetId: '1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp',
   fieldName: 'identi',
+  fieldLabelInSheet: 'Identifier',
   cdmAlias: '/BowdenTest',
-  firstCdmNumber: 535,
-  lastCdmNumber: 539,
+  firstCdmNumber: 533,
+  lastCdmNumber: 534,
   // firstSheetRow: 2,
   // lastSheetRow: 5,
 };
@@ -27,6 +28,7 @@ const start = async ({
   mode,
   sheetId,
   fieldName,
+  fieldLabelInSheet,
   cdmAlias,
   firstCdmNumber,
   lastCdmNumber,
@@ -56,11 +58,11 @@ const start = async ({
   // console.log(data);
 
   await asyncForEach(data, async (row) => {
-    console.log(row.Identifier);
+    console.log(row[fieldLabelInSheet]);
     // let fieldName = 'identi';
     // let cdmAlias = '/BowdenTest';
     let cdmNumber = row['CONTENTdm number'];
-    let value = row['Identifier'];
+    let value = row[fieldLabelInSheet];
     try {
       let res;
       if (mode === 'edit') {
