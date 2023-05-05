@@ -97,9 +97,13 @@ const start = async ({
       await transactionApi.insertMany(failures);
     }
   }
+  console.log(' Successes '.green.inverse);
   console.log(successes);
   console.log('-------------------');
+  console.log(' Failures '.yellow.inverse);
   console.log(failures);
+  console.log('-------------------');
+  console.log(' Summary '.blue.inverse);
   console.log(`Successes: ${successes.length}`.green);
   console.log(`Failures: ${failures.length}`.yellow);
   process.exit();
