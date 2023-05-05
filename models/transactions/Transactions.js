@@ -14,6 +14,10 @@ const TransactionsSchema = new Scheme({
     type: Boolean,
     required: true,
   },
+  batch: {
+    type: String,
+    required: true,
+  },
   created: { type: Date, default: Date.now },
 });
 

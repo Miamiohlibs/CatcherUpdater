@@ -8,15 +8,15 @@ const transactionApi = new TransactionApi();
 const colors = require('colors');
 
 let setup = {
-  // mode: 'edit', // edit mode makes changes to ContentDM
-  mode: 'testing', // testing mode lists changes but does not make them
+  mode: 'edit', // edit mode makes changes to ContentDM
+  // mode: 'testing', // testing mode lists changes but does not make them
   sheetId: '1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp',
   fieldName: 'identi',
   cdmAlias: '/BowdenTest',
-  // firstCdmNumber: 550,
-  // lastCdmNumber: 609,
-  firstSheetRow: 2,
-  lastSheetRow: 5,
+  firstCdmNumber: 540,
+  lastCdmNumber: 544,
+  // firstSheetRow: 2,
+  // lastSheetRow: 5,
 };
 
 let catcher = new CatcherSoap(conf);
@@ -64,7 +64,7 @@ const start = async ({
     try {
       let res;
       if (mode === 'edit') {
-        let res = await catcher.DoEditRequest(
+        res = await catcher.DoEditRequest(
           cdmAlias,
           fieldName,
           cdmNumber,
@@ -81,9 +81,13 @@ const start = async ({
       failures.push(err);
     }
   });
+
+  batchNumber = Date.now();
+
   if (successes.length > 0) {
     successes.map((item) => {
       item.success = true;
+      item.batch = batchNumber;
     });
     if (mode === 'edit') {
       await transactionApi.insertMany(successes);
@@ -92,6 +96,7 @@ const start = async ({
   if (failures.length > 0) {
     failures.map((failure) => {
       failure.success = false;
+      failure.batch = batchNumber;
     });
     if (mode === 'edit') {
       await transactionApi.insertMany(failures);
