@@ -13,8 +13,8 @@ let setup = {
   sheetId: '1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp',
   fieldName: 'identi',
   cdmAlias: '/BowdenTest',
-  firstCdmNumber: 540,
-  lastCdmNumber: 544,
+  firstCdmNumber: 535,
+  lastCdmNumber: 539,
   // firstSheetRow: 2,
   // lastSheetRow: 5,
 };
@@ -88,6 +88,7 @@ const start = async ({
     successes.map((item) => {
       item.success = true;
       item.batch = batchNumber;
+      item.collectionAlias = cdmAlias.substr(1);
     });
     if (mode === 'edit') {
       await transactionApi.insertMany(successes);
@@ -97,6 +98,7 @@ const start = async ({
     failures.map((failure) => {
       failure.success = false;
       failure.batch = batchNumber;
+      item.collectionAlias = cdmAlias.substr(1);
     });
     if (mode === 'edit') {
       await transactionApi.insertMany(failures);
