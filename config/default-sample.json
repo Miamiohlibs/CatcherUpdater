@@ -1,9 +1,34 @@
 {
+    "defaults": {
+        "sheetId": "1bzrTdPasgGW2u847cqqkXbl6ZEgzW-Mr",
+        "cdmField": "identi",
+        "fieldLabelInSheet": "Identifier",
+        "cdmAlias": "/BowdenTest"
+    },
     "catcher": {
         "licenseCode": "your-cdm-licenseCode",
         "serverUrl": "http://serverXXXXX.contentdm.oclc.org:8888",
         "username": "youruser",
         "password": "yourpassword",
         "endpoint": "https://worldcat.org/webservices/contentdm/catcher/6.0/CatcherService.wsdl"
+    },
+    "database": {
+        "use": "test",
+        "test": {
+            "host": "localhost",
+            "connection": "replaceWithMongoConnectionString",
+            "config": {
+                "useNewUrlParser": true,
+                "useUnifiedTopology": true
+            }
+        },
+        "prod": {
+            "host": "replace.with.your.host",
+            "connection": "replaceWithMongoConnectionString",
+            "config": {
+                "useNewUrlParser": true,
+                "useUnifiedTopology": true
+            }
+        }
     }
 }

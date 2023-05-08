@@ -1,4 +1,5 @@
-// basic express app
+const config = require('config');
+const defaults = config.get('defaults');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -11,7 +12,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.render('index.ejs');
+  res.render('index.ejs', { defaults: defaults });
 });
 
 app.post('/formsubmit', async (req, res) => {
