@@ -3,8 +3,8 @@ const CatcherEditService = require('../services/CatcherEditService');
 class CatcherController {
   constructor(req) {
     this.req = req;
-    // this.res = res;
     this.clearEmptyFields();
+    this.editor = new CatcherEditService(this.req.body);
   }
 
   clearEmptyFields() {
@@ -22,17 +22,19 @@ class CatcherController {
     }
   }
 
+  async getTimeEstimate() {
+    await this.editor.fetchGoogleData();
+    this.editor.dataFilter();
+    return this.editor.data.length;
+  }
+
   async processEdits() {
-    const editor = new CatcherEditService(this.req.body);
-    this.clearEmptyFields;
-    await editor.fetchGoogleData();
-    console.log(editor.data.length);
-    editor.dataFilter();
-    console.log(editor.data.length);
-    await editor.sendCatcherRequests();
-    editor.prepResponseStats();
-    await editor.logResponsesToDatabase();
-    return editor;
+    await this.editor.fetchGoogleData();
+    this.editor.dataFilter();
+    await this.editor.sendCatcherRequests();
+    this.editor.prepResponseStats();
+    await this.editor.logResponsesToDatabase();
+    return this.editor;
   }
 }
 

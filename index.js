@@ -15,9 +15,11 @@ app.get('/', (req, res) => {
 });
 
 app.post('/formsubmit', async (req, res) => {
-  console.log(req.body);
+  console.log('form submit body', req.body);
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
+  //   const timeEstimate = await catcherController.getTimeEstimate();
+  //   res.send(timeEstimate.toString());
   let { successes, failures } = await catcherController.processEdits();
   res.render('output.ejs', {
     successes: successes,
@@ -25,6 +27,15 @@ app.post('/formsubmit', async (req, res) => {
   });
 });
 
+app.post('/estimate', async (req, res) => {
+  console.log('estimate body', req.body);
+  const CatcherController = require('./controllers/CatcherController');
+  const catcherController = new CatcherController(req);
+  const timeEstimate = await catcherController.getTimeEstimate();
+  let responseJson = { timeEstimate: timeEstimate };
+  res.json(responseJson);
+});
+
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Catcher app listening at http://localhost:${port}`);
 });

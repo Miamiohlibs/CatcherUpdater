@@ -6,7 +6,7 @@
   width: 90%;
   margin: 10px auto;
   height: 22px;
-  background-color: #0A5F44;
+  background-color: #6c757d;
 }
 
 #progressBar div {
@@ -15,7 +15,7 @@
   padding: 0 10px;
   line-height: 22px; /* same as #progressBar height if we want text middle aligned */
   width: 0;
-  background-color: #CBEA00;
+  background-color: #007bff;
   box-sizing: border-box;
 }
 </style>
@@ -38,24 +38,36 @@ function progress(timeleft, timetotal, $element) {
     }
 };
 
-function getDuration() {
-    if ((('#firstCdmNumber').val() >0) && (('#lastCdmNumber').val() >0)) {
-        return (('#lastCdmNumber').val() - ('#firstCdmNumber').val());
-    } else {
-        if ((('#firstSheetRow').val() >0) && (('#lastSheetRow').val() > 0)) {
-            return (('#lastSheetRow').val() - ('#firstSheetRow').val());
-        } 
-    }   
-    return 0;
+async function getEstimate(args) {
+    try {
+        console.log(args)
+        const result = await $.ajax({
+        url: './estimate',
+        type: 'POST',
+        data: args
+    });
+    return result;
+    } catch(err) {
+        // console.log(err)
+        // throw err;
     }
+}
 
 $(document).ready(function() {
-  $('#formSubmit').on('click', function() {
-    $(this).attr('disabled', true);
-    alert('clicked')
-    let timer = getDuration();
-    $('#progressWrapper').show();
-     progress(timer, timer, $('#progressBar'));
+  $('#formSubmit').on('click', async function(e) {
+    e.preventDefault();
+    try{
+        $('#formSubmit').unbind('click');
+        $('#formSubmit').click();
+        $(this).attr('disabled', true);
+        let formData =$ ('form').serialize();
+        let timer = await getEstimate(formData);
+        timer = timer.timeEstimate;
+        $('#progressWrapper').show();
+        progress(timer, timer, $('#progressBar'));
+    } catch(err) {
+        console.log(err)
+    }
 
   })
 })
