@@ -10,9 +10,12 @@
 </head>
 <body class="container">
     <h1>Catcher Edit Manager</h1>
+    <div class="my-3">
+        <a href="/"><button class="btn btn-primary">Process Another Batch</button></a>
+    </div>
     <h2 class="bg-success text-white p-2">Successes: <%= successes.length %></h2>
     <h2 class="bg-warning  p-2">Failures: <%= failures.length %></h2>
-    
+
     <h3 class="text-success">Successes</h3>
     <pre>
     <%= JSON.stringify(successes,null,2) %>

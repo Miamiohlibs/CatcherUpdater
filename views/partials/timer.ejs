@@ -1,0 +1,74 @@
+<style>
+#progressWrapper {
+    display: none;
+}
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #6c757d;
+}
+
+#progressBar div {
+  height: 100%;
+  text-align: right;
+  padding: 0 10px;
+  line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+  width: 0;
+  background-color: #007bff;
+  box-sizing: border-box;
+}
+</style>
+
+<div id="progressWrapper">
+    <p class="h2">Estimated time to completion</p>
+  <div id="progressBar">
+    <div class="bar"></div>
+  </div>
+</div>
+
+<script>
+function progress(timeleft, timetotal, $element) {
+    var progressBarWidth = timeleft * $element.width() / timetotal;
+    $element.find('div').animate({ width: progressBarWidth }, 500).html(Math.floor(timeleft/60) + ":"+ timeleft%60);
+    if(timeleft > 0) {
+        setTimeout(function() {
+            progress(timeleft - 1, timetotal, $element);
+        }, 1000);
+    }
+};
+
+async function getEstimate(args) {
+    try {
+        console.log(args)
+        const result = await $.ajax({
+        url: './estimate',
+        type: 'POST',
+        data: args
+    });
+    return result;
+    } catch(err) {
+        // console.log(err)
+        // throw err;
+    }
+}
+
+$(document).ready(function() {
+  $('#formSubmit').on('click', async function(e) {
+    e.preventDefault();
+    try{
+        $('#formSubmit').unbind('click');
+        $('#formSubmit').click();
+        $(this).attr('disabled', true);
+        let formData =$ ('form').serialize();
+        let timer = await getEstimate(formData);
+        timer = timer.timeEstimate;
+        $('#progressWrapper').show();
+        progress(timer, timer, $('#progressBar'));
+    } catch(err) {
+        console.log(err)
+    }
+
+  })
+})
+</script>

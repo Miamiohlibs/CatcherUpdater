@@ -6,22 +6,22 @@
       class="form-control"
       name="sheetId"
       id="sheetId"
-      value="1fbs98T7BN0bl6bbAB-ELjNaigwLO0KCp"
+      value="<%- defaults.sheetId %>"
     />
     <br />
     <label for="fieldName">Field Name</label>
-    <input type="text" class="form-control" name="fieldName" id="fieldName" value="identi" /> <br />
+    <input type="text" class="form-control" name="fieldName" id="fieldName" value="<%- defaults.cdmField %>" /> <br />
     <label for="fieldLabelInSheet">Field Label in Sheet</label>
     <input
       type="text"
       name="fieldLabelInSheet"
       class="form-control"
       id="fieldLabelInSheet"
-      value="Identifier"
+      value="<%- defaults.fieldLabelInSheet %>"
     />
     <br />
     <label for="cdmAlias">CdM Collection Alias</label>
-    <input type="text" class="form-control" name="cdmAlias" id="cdmAlias" value="/BowdenTest" /> <br />
+    <input type="text" class="form-control" name="cdmAlias" id="cdmAlias" value="<%- defaults.cdmAlias %>" /> <br />
     <label for="firstCdmNumber">First CdM Number</label>
     <input
       type="text"
@@ -38,6 +38,6 @@
     <input type="text" class="form-control" name="firstSheetRow" id="firstSheetRow" value="" /> <br />
     <label for="lastSheetRow">Last Sheet Row</label>
     <input type="text" class="form-control" name="lastSheetRow" id="lastSheetRow" value="" /> <br />
-    <input type="submit" class="form-control btn btn-primary" value="Submit" />
+    <input type="submit" id="formSubmit" class="form-control btn btn-primary" value="Submit" />
   </form>
   
