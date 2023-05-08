@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% let list = '' %>
+    <% transactions.forEach(t => { %>
+        <% var time = new Date(parseInt(t)); %>
+        <% list = `<tr><td><a href="/logs/${t}">${t}</a></td><td>${time}</td></tr>` +list  %>
+    <% }) %>
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%- list %>
+        </tbody>
+    </table>
+</body>
+</html>

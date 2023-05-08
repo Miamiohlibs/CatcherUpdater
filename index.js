@@ -1,3 +1,5 @@
+const TransactionsApi = require('./models/transactions/TransactionApi');
+const transactionsApi = new TransactionsApi();
 const config = require('config');
 const defaults = config.get('defaults');
 const express = require('express');
@@ -35,6 +37,17 @@ app.post('/estimate', async (req, res) => {
   const timeEstimate = await catcherController.getTimeEstimate();
   let responseJson = { timeEstimate: timeEstimate };
   res.json(responseJson);
+});
+
+app.get('/logs', async (req, res) => {
+  const transactions = await transactionsApi.getBatches();
+  res.render('logs.ejs', { transactions: transactions });
+  // res.json(transactions);
+});
+
+app.get('/logs/:id', async (req, res) => {
+  const transaction = await transactionsApi.getBatch(req.params.id);
+  res.json(transaction);
 });
 
 app.listen(port, () => {
