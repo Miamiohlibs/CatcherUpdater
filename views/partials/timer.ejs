@@ -1,0 +1,62 @@
+<style>
+#progressWrapper {
+    display: none;
+}
+#progressBar {
+  width: 90%;
+  margin: 10px auto;
+  height: 22px;
+  background-color: #0A5F44;
+}
+
+#progressBar div {
+  height: 100%;
+  text-align: right;
+  padding: 0 10px;
+  line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+  width: 0;
+  background-color: #CBEA00;
+  box-sizing: border-box;
+}
+</style>
+
+<div id="progressWrapper">
+    <p class="h2">Estimated time to completion</p>
+  <div id="progressBar">
+    <div class="bar"></div>
+  </div>
+</div>
+
+<script>
+function progress(timeleft, timetotal, $element) {
+    var progressBarWidth = timeleft * $element.width() / timetotal;
+    $element.find('div').animate({ width: progressBarWidth }, 500).html(Math.floor(timeleft/60) + ":"+ timeleft%60);
+    if(timeleft > 0) {
+        setTimeout(function() {
+            progress(timeleft - 1, timetotal, $element);
+        }, 1000);
+    }
+};
+
+function getDuration() {
+    if ((('#firstCdmNumber').val() >0) && (('#lastCdmNumber').val() >0)) {
+        return (('#lastCdmNumber').val() - ('#firstCdmNumber').val());
+    } else {
+        if ((('#firstSheetRow').val() >0) && (('#lastSheetRow').val() > 0)) {
+            return (('#lastSheetRow').val() - ('#firstSheetRow').val());
+        } 
+    }   
+    return 0;
+    }
+
+$(document).ready(function() {
+  $('#formSubmit').on('click', function() {
+    $(this).attr('disabled', true);
+    alert('clicked')
+    let timer = getDuration();
+    $('#progressWrapper').show();
+     progress(timer, timer, $('#progressBar'));
+
+  })
+})
+</script>
