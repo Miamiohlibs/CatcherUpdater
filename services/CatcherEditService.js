@@ -4,6 +4,8 @@ const fetchGoogleData = require('../models/fetchGoogleData');
 const asyncForEach = require('../utilities/asyncForEach');
 const TransactionApi = require('../models/transactions/TransactionApi');
 const transactionApi = new TransactionApi();
+const BatchApi = require('../models/batches/BatchApi');
+const batchApi = new BatchApi();
 const CatcherSoap = require('../models/CatcherSoap');
 const catcherConf = config.get('catcher');
 const catcher = new CatcherSoap(catcherConf);
@@ -15,6 +17,7 @@ class CatcherEditService {
     this.fieldName = setup.fieldName;
     this.fieldLabelInSheet = setup.fieldLabelInSheet;
     this.cdmAlias = setup.cdmAlias;
+    this.batchName = setup.batchName;
     this.firstCdmNumber = setup.firstCdmNumber || undefined;
     this.lastCdmNumber = setup.lastCdmNumber || undefined;
     this.firstSheetRow = setup.firstSheetRow || undefined;
@@ -85,19 +88,19 @@ class CatcherEditService {
 
   prepResponseStats() {
     if (this.mode == 'edit') {
-      let batchNumber = Date.now();
+      this.batchId = Date.now();
 
       if (this.successes.length > 0) {
         this.successes.map((item) => {
           item.success = true;
-          item.batch = batchNumber;
+          item.batch = this.batchId;
           item.collectionAlias = this.cdmAlias.substr(1);
         });
       }
       if (this.failures.length > 0) {
         this.failures.map((item) => {
           item.success = false;
-          item.batch = batchNumber;
+          item.batch = this.batchId;
           item.collectionAlias = this.cdmAlias.substr(1);
         });
       }
@@ -108,6 +111,19 @@ class CatcherEditService {
     if (this.mode == 'edit') {
       await transactionApi.insertMany(this.successes);
       await transactionApi.insertMany(this.failures);
+      let allRecords = this.successes.concat(this.failures);
+      let allCdms = allRecords.map((item) => item.cdmNumber);
+      this.firstCdmNumber = Math.min(...allCdms);
+      this.lastCdmNumber = Math.max(...allCdms);
+      await batchApi.insertBatch({
+        batchId: this.batchId,
+        batchName: this.batchName,
+        successes: this.successes.length,
+        failures: this.failures.length,
+        collectionAlias: this.cdmAlias.substr(1),
+        firstCdmNumber: this.firstCdmNumber,
+        lastCdmNumber: this.lastCdmNumber,
+      });
     }
   }
 

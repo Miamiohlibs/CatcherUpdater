@@ -9,6 +9,8 @@
 </head>
 <body>
     <%- include('partials/nav') %>
+    <%- JSON.stringify(batches) %>
+    <hr />
     <% let list = '' %>
     <% transactions.forEach(t => { %>
         <% var time = new Date(parseInt(t)); %>
