@@ -61,4 +61,36 @@ module.exports = class TransactionApi {
       return false;
     }
   }
+
+  async getBatches() {
+    try {
+      await db.connect();
+      let transactions = await Crud.distinct('batch');
+      await db.disconnect();
+      return transactions;
+    } catch (err) {
+      Logger.error({
+        message: 'Error reading distinct transactions',
+        errorMessage: err.message,
+        error: err,
+      });
+      return false;
+    }
+  }
+
+  async getBatch(batch) {
+    try {
+      await db.connect();
+      let transactions = await Crud.find({ batch: batch });
+      await db.disconnect();
+      return transactions;
+    } catch (err) {
+      Logger.error({
+        message: 'Error reading transactions',
+        errorMessage: err.message,
+        error: err,
+      });
+      return false;
+    }
+  }
 };
