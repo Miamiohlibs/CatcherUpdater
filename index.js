@@ -1,5 +1,7 @@
 const TransactionsApi = require('./models/transactions/TransactionApi');
 const transactionsApi = new TransactionsApi();
+const BatchApi = require('./models/batches/BatchApi');
+const batchApi = new BatchApi();
 const config = require('config');
 const defaults = config.get('defaults');
 const express = require('express');
@@ -45,8 +47,9 @@ app.post('/estimate', async (req, res) => {
 
 app.get('/logs', async (req, res) => {
   const transactions = await transactionsApi.getBatches();
+  const batches = await batchApi.getBatches();
   // res.send(transactions);
-  res.render('logs.ejs', { transactions: transactions });
+  res.render('logs.ejs', { transactions: transactions, batches: batches });
   // res.json(transactions);
 });
 

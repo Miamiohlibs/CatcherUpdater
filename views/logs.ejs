@@ -9,6 +9,40 @@
 </head>
 <body>
     <%- include('partials/nav') %>
+    <%- // JSON.stringify(batches) %>
+    <% let batchList = '' %>
+    <% let time = '' %>
+    <% batches.forEach(b => { %>
+        <% var time = new Date((b.created)); %>
+        <% batchList = `<tr><td><a href="/logs/${b.batchId}">${b.batchId}</a></td>` +
+        `<td>${b.batchName}</td>` +
+        `<td>${b.successes}</td>` +
+        `<td>${b.failures}</td>` +
+        `<td>${b.collectionAlias}</td>` +
+        `<td>${b.firstCdmNumber}</td>` +
+        `<td>${b.lastCdmNumber}</td>` +
+        `<td>${time}</td></tr>` +
+            `</tr>` + batchList  %>   
+    <% }) %>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">BatchId</th>
+                <th scope="col">BatchName</th>
+                <th scope="col">Successes</th>
+                <th scope="col">Failures</th>
+                <th scope="col">Collection</th>
+                <th scope="col">First CDM number</th>
+                <th scope="col">Last CDM number</th>
+                <th scope="col">Time</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <%- batchList %>
+        </tbody>
+    </table>
+    <hr />
     <% let list = '' %>
     <% transactions.forEach(t => { %>
         <% var time = new Date(parseInt(t)); %>

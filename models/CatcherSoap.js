@@ -41,7 +41,15 @@ class CatcherSoap {
     let url = this.endpoint;
     let args = this.CreateEditArgs(cdmAlias, fieldname, cdmNumber, value);
     let querySummary =
-      'edit ' + cdmNumber + ' field: ' + fieldname + ' to be: ' + value;
+      'Edit collection: ' +
+      cdmAlias +
+      '; cdmNumber:' +
+      cdmNumber +
+      '; set field: ' +
+      fieldname +
+      ' to be: ' +
+      value;
+    // let query = { cdmAlias, fieldname, cdmNumber, value };
     return await this.DoSoapRequest(url, args, querySummary);
   }
 
