@@ -18,15 +18,19 @@ app.get('/', (req, res) => {
 });
 
 app.post('/formsubmit', async (req, res) => {
+  let startTime = new Date();
   console.log('form submit body', req.body);
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
   //   const timeEstimate = await catcherController.getTimeEstimate();
   //   res.send(timeEstimate.toString());
   let { successes, failures } = await catcherController.processEdits();
+  let endTime = new Date();
+  let elapsedTime = (endTime - startTime) / 1000;
   res.render('output.ejs', {
     successes: successes,
     failures: failures,
+    elapsedTime: elapsedTime,
   });
 });
 
