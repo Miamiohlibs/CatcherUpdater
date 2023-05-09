@@ -45,13 +45,17 @@ app.post('/estimate', async (req, res) => {
 
 app.get('/logs', async (req, res) => {
   const transactions = await transactionsApi.getBatches();
+  // res.send(transactions);
   res.render('logs.ejs', { transactions: transactions });
   // res.json(transactions);
 });
 
 app.get('/logs/:id', async (req, res) => {
-  const transaction = await transactionsApi.getBatch(req.params.id);
-  res.json(transaction);
+  const batch = await transactionsApi.getBatch(req.params.id);
+  let successes = batch.filter((t) => t.success);
+  let failures = batch.filter((t) => !t.success);
+  batchId = req.params.id;
+  res.render('output', { successes, failures, batchId });
 });
 
 app.listen(port, () => {
