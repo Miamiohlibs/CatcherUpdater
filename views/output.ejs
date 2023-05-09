@@ -21,7 +21,7 @@
     </div>
     <% } %>
         <h2 class="bg-success text-white p-2">Successes: <%= successes.length %></h2>
-    <h2 class="bg-warning  p-2">Failures: <%= failures.length %></h2>
+    <h2 class="bg-warning p-2">Failures: <%= failures.length %> <a href="#fails" class="mx-5 btn btn-outline-primary btn-light">Jump to List</a></h2>
     <% if (typeof(elapsedTime) !== "undefined") { %>
     <h2 class="bg-info text-white p-2">Time Elapsed: <%= elapsedTime %>s</h2>
     <% } %>
@@ -30,6 +30,7 @@
     <pre>
     <%= JSON.stringify(successes,null,2) %>
 </pre>
+    <a name="fails" id="failsnod"></a>
     <h3 class="text-warning">Failures</h3>
     <pre>
         <%= JSON.stringify(failures, null, 2) %>
