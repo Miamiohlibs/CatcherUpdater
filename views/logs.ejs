@@ -9,7 +9,7 @@
 </head>
 <body>
     <%- include('partials/nav') %>
-
+    <%- // JSON.stringify(batches) %>
     <% let batchList = '' %>
     <% let time = '' %>
     <% batches.forEach(b => { %>
@@ -19,8 +19,10 @@
         `<td>${b.successes}</td>` +
         `<td>${b.failures}</td>` +
         `<td>${b.collectionAlias}</td>` +
+        `<td>${b.firstCdmNumber}</td>` +
+        `<td>${b.lastCdmNumber}</td>` +
         `<td>${time}</td></tr>` +
-            `</tr>`   %>   
+            `</tr>` + batchList  %>   
     <% }) %>
     <table class="table">
         <thead>
@@ -30,6 +32,8 @@
                 <th scope="col">Successes</th>
                 <th scope="col">Failures</th>
                 <th scope="col">Collection</th>
+                <th scope="col">First CDM number</th>
+                <th scope="col">Last CDM number</th>
                 <th scope="col">Time</th>
 
             </tr>

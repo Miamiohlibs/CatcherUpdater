@@ -22,14 +22,14 @@ const TransactionsSchema = new Scheme({
     type: String,
     required: true,
   },
-  //   firstCdmNumber: {
-  //     type: Number,
-  //     required: false,
-  //   },
-  //   lastCdmNumber: {
-  //     type: Number,
-  //     required: false,
-  //   },
+  firstCdmNumber: {
+    type: Number,
+    required: false,
+  },
+  lastCdmNumber: {
+    type: Number,
+    required: false,
+  },
 
   created: { type: Date, default: Date.now },
 });

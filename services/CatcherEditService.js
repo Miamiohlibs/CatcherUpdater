@@ -25,6 +25,7 @@ class CatcherEditService {
     this.data = [];
     this.successes = [];
     this.failures = [];
+    this.allCdms = [];
   }
 
   async fetchGoogleData() {
@@ -63,6 +64,7 @@ class CatcherEditService {
     await asyncForEach(this.data, async (row) => {
       console.log(row[this.fieldLabelInSheet]);
       let cdmNumber = row['CONTENTdm number'];
+      this.allCdms.push(cdmNumber);
       let value = row[this.fieldLabelInSheet];
       try {
         let res;
@@ -112,9 +114,17 @@ class CatcherEditService {
       await transactionApi.insertMany(this.successes);
       await transactionApi.insertMany(this.failures);
       let allRecords = this.successes.concat(this.failures);
-      let allCdms = allRecords.map((item) => item.cdmNumber);
-      this.firstCdmNumber = Math.min(...allCdms);
-      this.lastCdmNumber = Math.max(...allCdms);
+      console.log('this.successes', this.successes);
+      console.log('this.failures', this.failures);
+      console.log('allCdms', this.allCdms);
+      if (this.firstCdmNumber === undefined) {
+        this.firstCdmNumber = Math.min(...this.allCdms);
+      }
+      if (this.lastCdmNumber === undefined) {
+        this.lastCdmNumber = Math.max(...this.allCdms);
+      }
+      console.log('firstCdmNumber', this.firstCdmNumber);
+      console.log('lastCdmNumber', this.lastCdmNumber);
       await batchApi.insertBatch({
         batchId: this.batchId,
         batchName: this.batchName,
