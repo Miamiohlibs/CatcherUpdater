@@ -1,43 +1,72 @@
+<style>
+  .input-group-text {
+    width: 200px;
+  }
+  .input-group {
+    margin-bottom: 1em;
+  }
+</style>
 <form action="formsubmit" method="post">
     <input type="hidden" name="mode" value="edit" />
-    <label for="sheetId">Sheet ID</label>
-    <input
-      type="text" 
-      class="form-control"
-      name="sheetId"
-      id="sheetId"
-      value="<%- defaults.sheetId %>"
-    />
-    <br />
-    <label for="fieldName">Field Name</label>
-    <input type="text" class="form-control" name="fieldName" id="fieldName" value="<%- defaults.cdmField %>" /> <br />
-    <label for="fieldLabelInSheet">Field Label in Sheet</label>
-    <input
-      type="text"
-      name="fieldLabelInSheet"
-      class="form-control"
-      id="fieldLabelInSheet"
-      value="<%- defaults.fieldLabelInSheet %>"
-    />
-    <br />
-    <label for="cdmAlias">CdM Collection Alias</label>
-    <input type="text" class="form-control" name="cdmAlias" id="cdmAlias" value="<%- defaults.cdmAlias %>" /> <br />
-    <label for="firstCdmNumber">First CdM Number</label>
-    <input
-      type="text"
-      class="form-control"
-      name="firstCdmNumber"
-      id="firstCdmNumber"
-      value=""
-    />
-    <br />
-    <label for="lastCdmNumber">Last CdM Number</label>
-    <input type="text" class="form-control" name="lastCdmNumber" id="lastCdmNumber" value="" />
-    <br />
-    <label for="firstSheetRow">First Sheet Row</label>
-    <input type="text" class="form-control" name="firstSheetRow" id="firstSheetRow" value="" /> <br />
-    <label for="lastSheetRow">Last Sheet Row</label>
-    <input type="text" class="form-control" name="lastSheetRow" id="lastSheetRow" value="" /> <br />
+    <div class="input-group flex-nowrap">
+      <label for="sheetId" class="input-group-text" >Sheet ID</label>
+      <input
+        type="text" 
+        class="form-control"
+        name="sheetId"
+        id="sheetId"
+        value="<%- defaults.sheetId %>"
+      />
+    </div>
+  
+    <div class="input-group flex-nowrap">
+      <label for="fieldName" class="input-group-text">Field Name</label>
+      <input type="text" class="form-control" name="fieldName" id="fieldName" value="<%- defaults.cdmField %>" /> 
+    </div>
+
+    <div class="input-group flex-nowrap">
+      <label for="fieldLabelInSheet" class="input-group-text">Field Label in Sheet</label>
+      <input
+        type="text"
+        name="fieldLabelInSheet"
+        class="form-control"
+        id="fieldLabelInSheet"
+        value="<%- defaults.fieldLabelInSheet %>"
+      />
+    </div>
+
+    <div class="input-group flex-nowrap">
+      <label for="cdmAlias" class="input-group-text">CdM Collection Alias</label>
+      <input type="text" class="form-control" name="cdmAlias" id="cdmAlias" value="<%- defaults.cdmAlias %>" /> 
+    </div>
+
+    <div class="input-group flex-nowrap">
+      <label for="firstCdmNumber" class="input-group-text">First CdM Number</label>
+      <input
+        type="text"
+        class="form-control"
+        name="firstCdmNumber"
+        id="firstCdmNumber"
+        value=""
+      />
+    </div>
+
+    <div class="input-group flex-nowrap">
+      <label for="lastCdmNumber" class="input-group-text">Last CdM Number</label>
+      <input type="text" class="form-control" name="lastCdmNumber" id="lastCdmNumber" value="" />
+    </div>
+
+    <div class="input-group flex-nowrap">
+      <label for="firstSheetRow" class="input-group-text">First Sheet Row</label>
+      <input type="text" class="form-control" name="firstSheetRow" id="firstSheetRow" value="" />
+    </div>
+    
+    
+    <div class="input-group flex-nowrap">
+    <label for="lastSheetRow" class="input-group-text">Last Sheet Row</label>
+    <input type="text" class="form-control" name="lastSheetRow" id="lastSheetRow" value="" />
+    </div>
+
     <input type="submit" id="formSubmit" class="form-control btn btn-primary" value="Submit" />
   </form>
   
