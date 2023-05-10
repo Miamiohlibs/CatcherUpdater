@@ -26,6 +26,19 @@
     <h2 class="bg-info text-white p-2">Time Elapsed: <%= elapsedTime %>s</h2>
     <% } %>
 
+    <div class="bg-light border border-info rounded p-2 mb-3">
+        <h3>Batch Setup</h3>
+        <% batch = batch[0] %>
+        <!-- <%- JSON.stringify(batch, null, 2) %> -->
+        <li>Batch Name: <%= batch.batchName %></li>
+        <li>Batch Id: <%= batch.batchId %></li>
+        <li>User: <%= batch.user %></li>
+        <li>Collection Alias: <%= batch.collectionAlias %></li>
+        <li>First CDM Number: <%= batch.firstCdmNumber %></li>
+        <li>Last CDM Number: <%= batch.lastCdmNumber %></li>
+        <li>Time: <%=batch.created %></li>
+    </div>
+
     <h3 class="text-success">Successes</h3>
     <pre>
     <%= JSON.stringify(successes,null,2) %>
