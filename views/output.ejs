@@ -25,8 +25,9 @@
     <% if (typeof(elapsedTime) !== "undefined") { %>
     <h2 class="bg-info text-white p-2">Time Elapsed: <%= elapsedTime %>s</h2>
     <div class="bg-light border border-info rounded p-2 mb-3">
-    <% Object.keys(batch).forEach(k => { %>
         <h3>Batch Setup</h3>
+
+    <% Object.keys(batch).forEach(k => { %>
         <%= k %>: <%= batch[k] %><br />
     <% }) %>
     </div>
