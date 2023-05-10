@@ -33,6 +33,7 @@ app.post('/formsubmit', async (req, res) => {
     successes: successes,
     failures: failures,
     elapsedTime: elapsedTime,
+    batch: req.body,
   });
 });
 
