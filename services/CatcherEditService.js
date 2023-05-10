@@ -128,7 +128,7 @@ class CatcherEditService {
       console.log('lastCdmNumber', this.lastCdmNumber);
       await batchApi.insertBatch({
         batchId: this.batchId,
-        user: this.user || 'unknown',
+        user: this.user,
         batchName: this.batchName,
         successes: this.successes.length,
         failures: this.failures.length,
