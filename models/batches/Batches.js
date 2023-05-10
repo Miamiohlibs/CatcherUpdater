@@ -10,6 +10,10 @@ const TransactionsSchema = new Scheme({
     type: String,
     required: false,
   },
+  user: {
+    type: String,
+    required: true,
+  },
   successes: {
     type: Number,
     required: true,

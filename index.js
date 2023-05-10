@@ -33,6 +33,7 @@ app.post('/formsubmit', async (req, res) => {
     successes: successes,
     failures: failures,
     elapsedTime: elapsedTime,
+    batch: req.body,
   });
 });
 
@@ -54,11 +55,12 @@ app.get('/logs', async (req, res) => {
 });
 
 app.get('/logs/:id', async (req, res) => {
-  const batch = await transactionsApi.getBatch(req.params.id);
-  let successes = batch.filter((t) => t.success);
-  let failures = batch.filter((t) => !t.success);
+  const transactions = await transactionsApi.getBatch(req.params.id);
+  let successes = transactions.filter((t) => t.success);
+  let failures = transactions.filter((t) => !t.success);
   batchId = req.params.id;
-  res.render('output', { successes, failures, batchId });
+  let batch = await batchApi.getBatch(batchId);
+  res.render('output', { successes, failures, batch });
 });
 
 app.listen(port, () => {
