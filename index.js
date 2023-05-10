@@ -63,6 +63,11 @@ app.get('/logs/:id', async (req, res) => {
   res.render('output', { successes, failures, batch });
 });
 
+app.post('/logs/search/', async (req, res) => {
+  const results = await transactionsApi.findInQuery(req.body.query);
+  res.render('search', { query: req.body.query, results: results });
+});
+
 app.listen(port, () => {
   console.log(`Catcher app listening at http://localhost:${port}`);
 });
