@@ -93,4 +93,19 @@ module.exports = class TransactionApi {
       return false;
     }
   }
+
+  async findInField(field, value) {
+    await db.connect();
+    let transactions = await Crud.find({
+      [field]: {
+        $regex: value,
+      },
+    });
+    await db.disconnect();
+    return transactions;
+  }
+
+  async findInQuery(value) {
+    return await this.findInField('query', value);
+  }
 };
