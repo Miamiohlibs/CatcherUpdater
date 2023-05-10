@@ -16,6 +16,7 @@
         <% var time = new Date((b.created)); %>
         <% batchList = `<tr><td><a href="/logs/${b.batchId}">${b.batchId}</a></td>` +
         `<td>${b.batchName}</td>` +
+        `<td>${b.user}</td>` +
         `<td>${b.successes}</td>` +
         `<td>${b.failures}</td>` +
         `<td>${b.collectionAlias}</td>` +
@@ -29,6 +30,7 @@
             <tr>
                 <th scope="col">BatchId</th>
                 <th scope="col">BatchName</th>
+                <th scope="col">User</th>
                 <th scope="col">Successes</th>
                 <th scope="col">Failures</th>
                 <th scope="col">Collection</th>

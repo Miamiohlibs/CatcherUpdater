@@ -8,6 +8,9 @@
 </style>
 <form action="formsubmit" method="post">
     <input type="hidden" name="mode" value="edit" />
+
+    <input type="hidden" name="user" value="<%- defaults.user %>" />
+
     <div class="input-group flex-nowrap">
       <label for="sheetId" class="input-group-text" >Sheet ID</label>
       <input
