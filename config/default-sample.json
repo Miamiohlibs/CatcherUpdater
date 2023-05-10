@@ -3,7 +3,8 @@
         "sheetId": "1bzrTdPasgGW2u847cqqkXbl6ZEgzW-Mr",
         "cdmField": "identi",
         "fieldLabelInSheet": "Identifier",
-        "cdmAlias": "/BowdenTest"
+        "cdmAlias": "/BowdenTest",
+        "user": "youruser"
     },
     "catcher": {
         "licenseCode": "your-cdm-licenseCode",
