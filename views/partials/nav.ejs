@@ -1,3 +1,8 @@
+<script>
+  $(document).ready(function(){
+      $('[data-bs-toggle="tooltip"]').tooltip();
+  });
+  </script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Catcher Edit Manager</a>
@@ -13,9 +18,15 @@
             <a class="nav-link" href="/logs">Logs</a>
           </li>
         </ul>
-        <form class="d-flex" method="post" action="/logs/search/">
-          <input class="form-control me-2" type="search" name="query" id="query" placeholder="Search Logs" aria-label="Search Logs">
-          <button class="btn btn-outline-primary" type="submit">Search</button>
+        <form class="d-flex" method="post" action="/logs/search/" id="log-form">
+          <div class="input-group">
+            <div class="input-group-text"><i class="bi bi-info-circle text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Try searching by identifier or ContentDM number. For short numbers, prefix the number with a colon, like ':635'"></i></div>
+
+            <input class="form-control" type="search" name="query" id="query" placeholder="Search Logs" aria-label="Search Logs">
+
+              <button class="btn btn-outline-primary" type="submit">Search</button>  
+
+          </div>
         </form>
       </div>
     </div>

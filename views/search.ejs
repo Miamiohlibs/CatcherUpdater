@@ -14,7 +14,7 @@
     <!-- <%- JSON.stringify(results) %> -->
     <% let list = '' %>
     <% results.forEach(r => { %>
-        <% list = `<tr><td><a href="/logs/${r.batch}">${r.batch}</a></td><td>${r.query}</td><td>${r.success}</td><td>${r.created}</td></tr>` +list  %>
+        <% list = `<tr><td><a href="/logs/${r.batch}">${r.batch}</a></td><td>${r.query}</td><td>${r.success}</td><td>${r.msg}</td><td>${r.created}</td></tr>` +list  %>
     <% }) %>
 
     <table class="table">
@@ -23,6 +23,7 @@
                 <th scope="col">Batch</th>
                 <th scope="col">Query</th>
                 <th scope="col">Success</th>
+                <th scope="col">Message</th>
                 <th scope="col">Time</th>
             </tr>
         </thead>
