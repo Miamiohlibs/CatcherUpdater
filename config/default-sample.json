@@ -1,10 +1,10 @@
 {
     "defaults": {
-        "sheetId": "1bzrTdPasgGW2u847cqqkXbl6ZEgzW-Mr",
+        "sheetId": "insertLonga1ph4num3r1c-str1n6",
         "cdmField": "identi",
         "fieldLabelInSheet": "Identifier",
-        "cdmAlias": "/BowdenTest",
-        "user": "youruser"
+        "cdmAlias": "/yourCdmCollectionSlug",
+        "user": "yourUser"
     },
     "catcher": {
         "licenseCode": "your-cdm-licenseCode",

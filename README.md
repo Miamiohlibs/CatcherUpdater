@@ -4,7 +4,7 @@ Update a field CONTENTdm using the Catcher SOAP API + values defined in a Google
 
 ## Requirements
 
-- Node.js (written for Node 16.16.0; other versions may require changes)
+- Node.js (written for Node 16.16.0; tested on 18.16.0; other versions may require changes)
 - Mongo-compatible database
 - Google Sheets
 
