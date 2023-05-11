@@ -12,7 +12,7 @@
     <input type="hidden" name="user" value="<%- defaults.user %>" />
 
     <div class="input-group flex-nowrap">
-      <label for="sheetId" class="input-group-text" >Sheet ID</label>
+      <label for="sheetId" class="input-group-text" >Google Sheet ID <span><i class="bi bi-info-circle text-primary mx-3" data-bs-toggle="tooltip" title="If the sheet URL is https://docs.google.com/spreadsheets/d/xyz-123/edit the sheetId is xyz-123"></i></span> </label>
       <input
         type="text" 
         class="form-control"
@@ -23,7 +23,7 @@
     </div>
   
     <div class="input-group flex-nowrap">
-      <label for="fieldName" class="input-group-text">Field Name</label>
+      <label for="fieldName" class="input-group-text">CdM Field Name</label>
       <input type="text" class="form-control" name="fieldName" id="fieldName" value="<%- defaults.cdmField %>" /> 
     </div>
 
