@@ -16,11 +16,11 @@ const TransactionsSchema = new Scheme({
   },
   successes: {
     type: Number,
-    required: true,
+    required: false,
   },
   failures: {
     type: Number,
-    required: true,
+    required: false,
   },
   collectionAlias: {
     type: String,
