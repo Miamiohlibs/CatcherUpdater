@@ -37,16 +37,21 @@ class CatcherEditService {
   dataFilter() {
     // filter data by row
     // note: offset by two because of header row and zero-indexing
+    // limit to just index, fieldToChange, and cdm number
+    this.data = this.data.map((row, index) => {
+      return { index: index, ...row };
+    });
+
     if (this.firstSheetRow !== undefined) {
-      this.data = this.data.filter(
-        (value, rowIndex) => rowIndex + 2 >= this.firstSheetRow
-      );
+      this.firstRowIndex = this.firstSheetRow - 2;
+      this.data = this.data.filter((row) => row.index >= this.firstRowIndex);
     }
+    console.log('after first row filter', this.data.length);
     if (this.lastSheetRow !== undefined) {
-      this.data = this.data.filter(
-        (value, rowIndex) => rowIndex + 2 <= this.lastSheetRow
-      );
+      this.lastRowIndex = this.lastSheetRow - 2;
+      this.data = this.data.filter((row) => row.index <= this.lastRowIndex);
     }
+    console.log('after last row filter', this.data.length);
     // filter data by CdM number
     if (this.firstCdmNumber !== undefined) {
       this.data = this.data.filter(
