@@ -12,6 +12,8 @@ const catcher = new CatcherSoap(catcherConf);
 
 class CatcherEditService {
   constructor(setup) {
+    this.batchId = new Date().getTime().toString();
+    console.log('batchId', this.batchId, typeof this.batchId);
     this.mode = setup.mode;
     this.user = setup.user;
     this.sheetId = setup.sheetId;
@@ -27,6 +29,29 @@ class CatcherEditService {
     this.successes = [];
     this.failures = [];
     this.allCdms = [];
+  }
+
+  async submitInitialLog() {
+    let batchInit = {
+      batchId: this.batchId,
+      batchName: this.batchName,
+      user: this.user,
+      collectionAlias: this.cdmAlias,
+    };
+    if (this.firstCdmNumber !== undefined) {
+      batchInit.firstCdmNumber = this.firstCdmNumber;
+    }
+    if (this.lastCdmNumber !== undefined) {
+      batchInit.lastCdmNumber = this.lastCdmNumber;
+    }
+    if (this.firstSheetRow !== undefined) {
+      batchInit.firstSheetRow = this.firstSheetRow;
+    }
+    if (this.lastSheetRow !== undefined) {
+      batchInit.lastSheetRow = this.lastSheetRow;
+    }
+    await batchApi.insertBatch(batchInit);
+    return;
   }
 
   async fetchGoogleData() {
@@ -46,12 +71,12 @@ class CatcherEditService {
       this.firstRowIndex = this.firstSheetRow - 2;
       this.data = this.data.filter((row) => row.index >= this.firstRowIndex);
     }
-    console.log('after first row filter', this.data.length);
+    // console.log('after first row filter', this.data.length);
     if (this.lastSheetRow !== undefined) {
       this.lastRowIndex = this.lastSheetRow - 2;
       this.data = this.data.filter((row) => row.index <= this.lastRowIndex);
     }
-    console.log('after last row filter', this.data.length);
+    // console.log('after last row filter', this.data.length);
     // filter data by CdM number
     if (this.firstCdmNumber !== undefined) {
       this.data = this.data.filter(
@@ -68,7 +93,7 @@ class CatcherEditService {
 
   async sendCatcherRequests() {
     await asyncForEach(this.data, async (row) => {
-      console.log(row[this.fieldLabelInSheet]);
+      // console.log(row[this.fieldLabelInSheet]);
       let cdmNumber = row['CONTENTdm number'];
       this.allCdms.push(cdmNumber);
       let value = row[this.fieldLabelInSheet];
@@ -88,6 +113,7 @@ class CatcherEditService {
           res.msg = catcher.cleanSoapResponse(res.msg);
         }
         this.successes.push(res);
+        // console.log(colors.green('success', res));
       } catch (err) {
         this.failures.push(err);
       }
@@ -96,8 +122,6 @@ class CatcherEditService {
 
   prepResponseStats() {
     if (this.mode == 'edit') {
-      this.batchId = Date.now();
-
       if (this.successes.length > 0) {
         this.successes.map((item) => {
           item.success = true;
@@ -115,26 +139,24 @@ class CatcherEditService {
     }
   }
 
-  async logResponsesToDatabase() {
+  async updateLog() {
     if (this.mode == 'edit') {
       await transactionApi.insertMany(this.successes);
       await transactionApi.insertMany(this.failures);
       let allRecords = this.successes.concat(this.failures);
-      console.log('this.successes', this.successes);
-      console.log('this.failures', this.failures);
-      console.log('allCdms', this.allCdms);
+      // console.log('this.successes', this.successes);
+      // console.log('this.failures', this.failures);
+      // console.log('allCdms', this.allCdms);
       if (this.firstCdmNumber === undefined) {
         this.firstCdmNumber = Math.min(...this.allCdms);
       }
       if (this.lastCdmNumber === undefined) {
         this.lastCdmNumber = Math.max(...this.allCdms);
       }
-      console.log('firstCdmNumber', this.firstCdmNumber);
-      console.log('lastCdmNumber', this.lastCdmNumber);
-      await batchApi.insertBatch({
-        batchId: this.batchId,
-        user: this.user,
-        batchName: this.batchName,
+      // console.log('firstCdmNumber', this.firstCdmNumber);
+      // console.log('lastCdmNumber', this.lastCdmNumber);
+      // console.log(`line 160: ${this.batchId}`.red, typeof this.batchId);
+      await batchApi.updateBatch(this.batchId, {
         successes: this.successes.length,
         failures: this.failures.length,
         collectionAlias: this.cdmAlias.substr(1),
@@ -144,18 +166,18 @@ class CatcherEditService {
     }
   }
 
-  logResponseToConsole() {
-    console.log(' Successes '.green.inverse);
-    console.log(this.successes);
-    console.log('-------------------');
-    console.log(' Failures '.yellow.inverse);
-    console.log(this.failures);
-    console.log('-------------------');
-    console.log(' Summary '.blue.inverse);
-    console.log(`Successes: ${this.successes.length}`.green);
-    console.log(`Failures: ${this.failures.length}`.yellow);
-    process.exit();
-  }
+  // logResponseToConsole() {
+  //   console.log(' Successes '.green.inverse);
+  //   console.log(this.successes);
+  //   console.log('-------------------');
+  //   console.log(' Failures '.yellow.inverse);
+  //   console.log(this.failures);
+  //   console.log('-------------------');
+  //   console.log(' Summary '.blue.inverse);
+  //   console.log(`Successes: ${this.successes.length}`.green);
+  //   console.log(`Failures: ${this.failures.length}`.yellow);
+  //   process.exit();
+  // }
 }
 
 module.exports = CatcherEditService;

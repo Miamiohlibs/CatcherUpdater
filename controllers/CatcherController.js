@@ -28,12 +28,17 @@ class CatcherController {
     return this.editor.data.length;
   }
 
+  async initializeBatch() {
+    await this.editor.submitInitialLog();
+    return { batchId: this.editor.batchId, batchName: this.editor.batchName };
+  }
+
   async processEdits() {
     await this.editor.fetchGoogleData();
     this.editor.dataFilter();
     await this.editor.sendCatcherRequests();
     this.editor.prepResponseStats();
-    await this.editor.logResponsesToDatabase();
+    await this.editor.updateLog();
     return this.editor;
   }
 }
