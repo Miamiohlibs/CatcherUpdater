@@ -29,6 +29,10 @@ In the `config` folder, copy `default-sample.json` to `default.json`. Update `de
   - First Sheet Row: tell the process to ignore items with a lower numbered row in the Google Sheet
   - Last Sheet Row: tell the process to ignore items with a higher numbered row in the Google Sheet
 
+### Important Note
+
+After running updates, you must re-index the collection in the CONTENTdm Administration website before changes will appear in the collection. Items changed will be locked until re-indexing. Any attempt to re-update the same items will result in failures unless you manually unlock the item in the CONTENTdm Administration website.
+
 ## Logs
 
 Two kinds of logs are created:
