@@ -8,10 +8,10 @@
     <title>Results - Catcher Edit Manager</title>
 </head>
 <body>
-    <%- include('partials/nav') %>
+    <%- include('partials/nav', defaults) %>
     <div class="container">
     <h1>Output</h1>
-    <% if (typeof(elapsedTime) !== "undefined") { %>
+    <% if (fromSubmit) { %>
     <div class="my-3">
         <a href="/"><button class="btn btn-primary">Process Another Batch</button></a>
     </div>

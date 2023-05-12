@@ -5,6 +5,7 @@ const batchApi = new BatchApi();
 const config = require('config');
 const defaults = config.get('defaults');
 const express = require('express');
+const e = require('express');
 const app = express();
 const port = 3000;
 
@@ -19,22 +20,33 @@ app.get('/', (req, res) => {
   res.render('index.ejs', { defaults: defaults });
 });
 
+// app.post('/formsubmit', async (req, res) => {
+//   let startTime = new Date();
+//   console.log('form submit body', req.body);
+//   const CatcherController = require('./controllers/CatcherController');
+//   const catcherController = new CatcherController(req);
+//   //   const timeEstimate = await catcherController.getTimeEstimate();
+//   //   res.send(timeEstimate.toString());
+//   let { successes, failures } = await catcherController.processEdits();
+//   let endTime = new Date();
+//   let elapsedTime = (endTime - startTime) / 1000;
+//   res.render('output.ejs', {
+//     successes: successes,
+//     failures: failures,
+//     elapsedTime: elapsedTime,
+//     batch: req.body,
+//   });
+// });
+
 app.post('/formsubmit', async (req, res) => {
-  let startTime = new Date();
   console.log('form submit body', req.body);
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
-  //   const timeEstimate = await catcherController.getTimeEstimate();
-  //   res.send(timeEstimate.toString());
+  const timeEstimate = await catcherController.getTimeEstimate();
+  let details = await catcherController.initializeBatch();
+  details.timeEstimate = timeEstimate;
+  res.render('confirm.ejs', { details: details, defaults: defaults });
   let { successes, failures } = await catcherController.processEdits();
-  let endTime = new Date();
-  let elapsedTime = (endTime - startTime) / 1000;
-  res.render('output.ejs', {
-    successes: successes,
-    failures: failures,
-    elapsedTime: elapsedTime,
-    batch: req.body,
-  });
 });
 
 app.post('/estimate', async (req, res) => {
@@ -50,22 +62,49 @@ app.get('/logs', async (req, res) => {
   const transactions = await transactionsApi.getBatches();
   const batches = await batchApi.getBatches();
   // res.send(transactions);
-  res.render('logs.ejs', { transactions: transactions, batches: batches });
+  res.render('logs.ejs', {
+    transactions: transactions,
+    batches: batches,
+    defaults: defaults,
+  });
   // res.json(transactions);
 });
 
 app.get('/logs/:id', async (req, res) => {
+  let referer = req.get('Referrer');
+  console.log('referer', referer);
+  let fromSubmit = false;
+  if (referer.match(/formsubmit/)) {
+    fromSubmit = true;
+  }
+  console.log('fromSubmit', fromSubmit);
   const transactions = await transactionsApi.getBatch(req.params.id);
   let successes = transactions.filter((t) => t.success);
   let failures = transactions.filter((t) => !t.success);
   batchId = req.params.id;
   let batch = await batchApi.getBatch(batchId);
-  res.render('output', { successes, failures, batch });
+  res.render('output', { successes, failures, batch, fromSubmit, defaults });
 });
 
 app.post('/logs/search/', async (req, res) => {
   const results = await transactionsApi.findInQuery(req.body.query);
-  res.render('search', { query: req.body.query, results: results });
+  res.render('search', { query: req.body.query, results: results, defaults });
+});
+
+app.get('/logs/check/:id', async (req, res) => {
+  // returns true if success value set, can be zero
+  const batchArr = await batchApi.getBatch(req.params.id);
+  if (batchArr.length === 0) {
+    res.send({ complete: false, message: 'Batch not found' });
+  } else {
+    const batch = batchArr[0];
+    console.log(batch);
+    if (typeof batch.successes === 'undefined') {
+      res.send({ complete: false, message: 'Batch not complete' });
+    } else {
+      res.send({ complete: true });
+    }
+  }
 });
 
 app.listen(port, () => {

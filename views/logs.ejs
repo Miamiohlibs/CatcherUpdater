@@ -8,7 +8,7 @@
     <%- include('partials/bootstrap') %>
 </head>
 <body>
-    <%- include('partials/nav') %>
+    <%- include('partials/nav', defaults) %>
     <%- // JSON.stringify(batches) %>
     <% let batchList = '' %>
     <% let time = '' %>
@@ -42,23 +42,6 @@
         </thead>
         <tbody>
             <%- batchList %>
-        </tbody>
-    </table>
-    <hr />
-    <% let list = '' %>
-    <% transactions.forEach(t => { %>
-        <% var time = new Date(parseInt(t)); %>
-        <% list = `<tr><td><a href="/logs/${t}">${t}</a></td><td>${time}</td></tr>` +list  %>
-    <% }) %>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Transaction</th>
-                <th scope="col">Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <%- list %>
         </tbody>
     </table>
 </body>

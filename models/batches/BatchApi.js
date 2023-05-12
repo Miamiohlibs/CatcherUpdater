@@ -54,4 +54,33 @@ module.exports = class BatchApi {
       return false;
     }
   }
+
+  async updateBatch(batchId, updates) {
+    try {
+      await db.connect();
+      let res = await Crud.updateOne(
+        { batchId: batchId },
+        { $set: { ...updates } },
+        { upsert: false }
+      );
+      await db.disconnect();
+      if (res.acknowledged) {
+        Logger.log('Batch updated');
+        return true;
+      } else {
+        Logger.error({
+          message: 'Error updating batch',
+          errorMessage: 'Batch not acknowledged',
+        });
+        return false;
+      }
+    } catch (err) {
+      Logger.error({
+        message: 'Error updating batch',
+        errorMessage: err.message,
+        error: err,
+      });
+      return false;
+    }
+  }
 };

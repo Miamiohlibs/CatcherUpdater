@@ -60,21 +60,12 @@ async function getEstimate(args) {
 }
 
 $(document).ready(function() {
-  $('#formSubmit').on('click', async function(e) {
-    e.preventDefault();
     try{
-        $('#formSubmit').unbind('click');
-        $('#formSubmit').click();
-        $(this).attr('disabled', true);
-        let formData =$ ('form').serialize();
-        let timer = await getEstimate(formData);
-        timer = timer.timeEstimate;
+        timer = <%- details.timeEstimate %>;
         $('#progressWrapper').show();
         progress(timer, timer, $('#progressBar'));
     } catch(err) {
         console.log(err)
     }
-
-  })
 })
 </script>
