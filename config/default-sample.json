@@ -4,7 +4,8 @@
         "cdmField": "identi",
         "fieldLabelInSheet": "Identifier",
         "cdmAlias": "/yourCdmCollectionSlug",
-        "user": "yourUser"
+        "user": "yourUser",
+        "cdmAdminUrl": "https://server17240.contentdm.oclc.org/cgi-bin/admin/start.exe"
     },
     "catcher": {
         "licenseCode": "your-cdm-licenseCode",

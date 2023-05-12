@@ -45,7 +45,7 @@ app.post('/formsubmit', async (req, res) => {
   const timeEstimate = await catcherController.getTimeEstimate();
   let details = await catcherController.initializeBatch();
   details.timeEstimate = timeEstimate;
-  res.render('confirm.ejs', { details: details });
+  res.render('confirm.ejs', { details: details, defaults: defaults });
   let { successes, failures } = await catcherController.processEdits();
 });
 
@@ -65,6 +65,7 @@ app.get('/logs', async (req, res) => {
   res.render('logs.ejs', {
     transactions: transactions,
     batches: batches,
+    defaults: defaults,
   });
   // res.json(transactions);
 });
@@ -82,12 +83,12 @@ app.get('/logs/:id', async (req, res) => {
   let failures = transactions.filter((t) => !t.success);
   batchId = req.params.id;
   let batch = await batchApi.getBatch(batchId);
-  res.render('output', { successes, failures, batch, fromSubmit });
+  res.render('output', { successes, failures, batch, fromSubmit, defaults });
 });
 
 app.post('/logs/search/', async (req, res) => {
   const results = await transactionsApi.findInQuery(req.body.query);
-  res.render('search', { query: req.body.query, results: results });
+  res.render('search', { query: req.body.query, results: results, defaults });
 });
 
 app.get('/logs/check/:id', async (req, res) => {
