@@ -17,7 +17,7 @@
             <li>Estimated time to completion: <%= details.timeEstimate %>s</li>
             <%- include ('partials/timer', {timeEstimate: details.timeEstimate}) %>
             <script>
-                setTimeout(async function() {
+                setInterval(async function() {
                    let complete = await fetch('http://localhost:3000/logs/check/<%= details.batchId %>');
                     if (complete) {
                         window.location.href = '/logs/<%= details.batchId %>';
