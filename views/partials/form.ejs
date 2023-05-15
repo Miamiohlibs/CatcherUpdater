@@ -19,12 +19,13 @@
         name="sheetId"
         id="sheetId"
         value="<%- defaults.sheetId %>"
+        required
       />
     </div>
   
     <div class="input-group flex-nowrap">
       <label for="fieldName" class="input-group-text">CdM Field Name</label>
-      <input type="text" class="form-control" name="fieldName" id="fieldName" value="<%- defaults.cdmField %>" /> 
+      <input type="text" class="form-control" name="fieldName" id="fieldName" value="<%- defaults.cdmField %>" required /> 
     </div>
 
     <div class="input-group flex-nowrap">
@@ -35,12 +36,13 @@
         class="form-control"
         id="fieldLabelInSheet"
         value="<%- defaults.fieldLabelInSheet %>"
+        required
       />
     </div>
 
     <div class="input-group flex-nowrap">
       <label for="cdmAlias" class="input-group-text">CdM Collection Alias</label>
-      <input type="text" class="form-control" name="cdmAlias" id="cdmAlias" value="<%- defaults.cdmAlias %>" /> 
+      <input type="text" class="form-control" name="cdmAlias" id="cdmAlias" value="<%- defaults.cdmAlias %>" required /> 
     </div>
 
     <div class="input-group flex-nowrap">
