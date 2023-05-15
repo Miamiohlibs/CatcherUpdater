@@ -16,6 +16,7 @@ In the `config` folder, copy `default-sample.json` to `default.json`. Update `de
 
 - Start the script by running `node index`
 - Web interface will be available on `http://localhost:3000`
+- If desired, set a different port by adding a `.env` file with `PORT=9999` or with whatever port you choose
 - Required Fields:
   - Google Sheet Id: this is _part_ of the GSheet Url. If the sheet URL is https://docs.google.com/spreadsheets/d/xyz-123/edit the sheetId is **xyz-123**
     - Note: the Google Sheet must be viewable by anyone with the URL. This tool does not make provisions for logging in to access the sheet
