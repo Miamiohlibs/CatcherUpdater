@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const TransactionsApi = require('./models/transactions/TransactionApi');
 const transactionsApi = new TransactionsApi();
 const BatchApi = require('./models/batches/BatchApi');
@@ -5,9 +6,8 @@ const batchApi = new BatchApi();
 const config = require('config');
 const defaults = config.get('defaults');
 const express = require('express');
-const e = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
