@@ -9,7 +9,9 @@ module.exports = class BatchApi {
   async getBatches() {
     try {
       await db.connect();
+      Logger.log('getting batches');
       let batches = await Crud.find();
+      Logger.log('got # batches', batches.length);
       await db.disconnect();
       return batches;
     } catch (err) {
@@ -25,7 +27,9 @@ module.exports = class BatchApi {
   async getBatch(batchId) {
     try {
       await db.connect();
+      Logger.log('getting batchId', batchId);
       let batch = await Crud.find({ batchId });
+      Logger.log('batch', batch);
       await db.disconnect();
       return batch;
     } catch (err) {
@@ -41,6 +45,7 @@ module.exports = class BatchApi {
   async insertBatch(batch) {
     try {
       await db.connect();
+      Logger.log('inserting batch', batch);
       await Crud.create(batch);
       await db.disconnect();
       Logger.log('Batch saved');
@@ -58,11 +63,15 @@ module.exports = class BatchApi {
   async updateBatch(batchId, updates) {
     try {
       await db.connect();
+      Logger.log('updating batch', batchId, updates);
       let res = await Crud.updateOne(
         { batchId: batchId },
         { $set: { ...updates } },
         { upsert: false }
       );
+      Logger.log('batch update results:', res);
+      {
+      }
       await db.disconnect();
       if (res.acknowledged) {
         Logger.log('Batch updated');
