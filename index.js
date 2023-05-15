@@ -43,8 +43,12 @@ app.post('/formsubmit', async (req, res) => {
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
   const timeEstimate = await catcherController.getTimeEstimate();
+  if (timeEstimate.success === false) {
+    res.render('errors', { errors: timeEstimate.errors, defaults: defaults });
+    return;
+  }
   let details = await catcherController.initializeBatch();
-  details.timeEstimate = timeEstimate;
+  details.timeEstimate = timeEstimate.time;
   res.render('confirm.ejs', { details: details, defaults: defaults });
   let { successes, failures } = await catcherController.processEdits();
 });

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <%- include('partials/bootstrap') %>
+</head>
+<body>
+    <%- include('partials/nav') %>
+    <div class="container">
+    <% errors.forEach(function(error){ %>
+        <h1 class="border border-danger border-1 rounded p-2 h4"><%- error.message %></h1>
+        <% if (error.hasOwnProperty('hint')) { %>
+            <div class="border border-info border-3 rounded p-2">
+                <h2>Fixing the error:</h2>
+                <p class="h3"><%- error.hint %></p>
+            </div>
+        <% } %>
+    <% }); %>
+    </div>
+</body>
+</html>

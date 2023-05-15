@@ -24,8 +24,11 @@ class CatcherController {
 
   async getTimeEstimate() {
     await this.editor.fetchGoogleData();
+    if (this.editor.errors.length > 0) {
+      return { success: false, errors: this.editor.errors };
+    }
     this.editor.dataFilter();
-    return this.editor.data.length;
+    return { success: true, time: this.editor.data.length };
   }
 
   async initializeBatch() {

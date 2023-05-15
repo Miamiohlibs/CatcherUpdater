@@ -29,6 +29,7 @@ class CatcherEditService {
     this.successes = [];
     this.failures = [];
     this.allCdms = [];
+    this.errors = [];
   }
 
   async submitInitialLog() {
@@ -55,7 +56,19 @@ class CatcherEditService {
   }
 
   async fetchGoogleData() {
-    this.data = await fetchGoogleData(this.sheetId);
+    let res = await fetchGoogleData(this.sheetId);
+    if (res.success) {
+      this.data = res.data;
+      // console.log('Google Sheet data', this.data);
+    } else {
+      this.errors.push({
+        message:
+          `Error fetching Google Sheet data with id:<br>${this.sheetId}<br><br> ` +
+          res.error,
+        hint: 'Check that the sheet id is correct and that sheet is shared with anyone with the URL.',
+      });
+      console.log('error fetching Google sheet:', res.error);
+    }
     return;
   }
 
