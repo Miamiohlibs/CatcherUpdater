@@ -74,16 +74,27 @@ app.get('/logs/:id', async (req, res) => {
   let referer = req.get('Referrer');
   console.log('referer', referer);
   let fromSubmit = false;
-  if (referer.match(/formsubmit/)) {
+  let msgs = [];
+  if (typeof referer !== 'undefined' && referer.match(/formsubmit/)) {
     fromSubmit = true;
   }
-  console.log('fromSubmit', fromSubmit);
+  console.log('fromSubmit', fromSubmit); // true if coming from a form submit
   const transactions = await transactionsApi.getBatch(req.params.id);
   let successes = transactions.filter((t) => t.success);
   let failures = transactions.filter((t) => !t.success);
   batchId = req.params.id;
   let batch = await batchApi.getBatch(batchId);
-  res.render('output', { successes, failures, batch, fromSubmit, defaults });
+  if (batch.length === 0) {
+    msgs.push({ msg: `Batch ${batchId} not found`, type: 'danger' });
+  }
+  res.render('output', {
+    successes,
+    failures,
+    batch,
+    fromSubmit,
+    defaults,
+    msgs,
+  });
 });
 
 app.post('/logs/search/', async (req, res) => {
