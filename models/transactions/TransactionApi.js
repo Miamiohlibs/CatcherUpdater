@@ -13,16 +13,17 @@ module.exports = class TransactionApi {
       success,
     });
     try {
-      await db.connect();
+      // await db.connect();
       await transaction.save();
-      await db.disconnect();
-      Logger.log('Transaction saved');
+      // await db.disconnect();
+      Logger.log('Transaction saved', transaction);
       return transaction;
     } catch (err) {
       Logger.error({
         message: 'Error saving transaction',
         errorMessage: err.message,
         error: err,
+        transaction,
       });
       return false;
     }
@@ -30,10 +31,10 @@ module.exports = class TransactionApi {
 
   async insertMany(transactions) {
     try {
-      await db.connect();
+      // await db.connect();
       await Crud.insertMany(transactions);
-      await db.disconnect();
-      Logger.log('Transactions saved');
+      // await db.disconnect();
+      Logger.log('Transactions saved', transactions.length);
       return true;
     } catch (err) {
       Logger.error({
@@ -47,9 +48,9 @@ module.exports = class TransactionApi {
 
   async read(query) {
     try {
-      await db.connect();
+      // await db.connect();
       let transactions = await Crud.find(query);
-      await db.disconnect();
+      // await db.disconnect();
       Logger.log('Transactions read');
       return transactions;
     } catch (err) {
@@ -64,9 +65,11 @@ module.exports = class TransactionApi {
 
   async getBatches() {
     try {
-      await db.connect();
+      // await db.connect();
+      Logger.log('getting batches');
       let transactions = await Crud.distinct('batch');
-      await db.disconnect();
+      Logger.log('got # batches', transactions.length);
+      // await db.disconnect();
       return transactions;
     } catch (err) {
       Logger.error({
@@ -80,9 +83,11 @@ module.exports = class TransactionApi {
 
   async getBatch(batch) {
     try {
-      await db.connect();
+      // await db.connect();
+      Logger.log('getting batch', batch);
       let transactions = await Crud.find({ batch: batch });
-      await db.disconnect();
+      Logger.log('got batch of# transactions', transactions.length);
+      // await db.disconnect();
       return transactions;
     } catch (err) {
       Logger.error({
@@ -95,17 +100,18 @@ module.exports = class TransactionApi {
   }
 
   async findInField(field, value) {
-    await db.connect();
+    // await db.connect();
     let transactions = await Crud.find({
       [field]: {
         $regex: value,
       },
     });
-    await db.disconnect();
+    // await db.disconnect();
     return transactions;
   }
 
   async findInQuery(value) {
+    Logger.log('finding value in query:', value);
     return await this.findInField('query', value);
   }
 };

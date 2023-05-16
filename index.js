@@ -9,6 +9,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const Logger = console; //require('./helpers/Logger');
+const db = require('./utilities/database');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -22,27 +23,10 @@ app.get('/', (req, res) => {
   res.render('index.ejs', { defaults: defaults });
 });
 
-// app.post('/formsubmit', async (req, res) => {
-//   let startTime = new Date();
-//   console.log('form submit body', req.body);
-//   const CatcherController = require('./controllers/CatcherController');
-//   const catcherController = new CatcherController(req);
-//   //   const timeEstimate = await catcherController.getTimeEstimate();
-//   //   res.send(timeEstimate.toString());
-//   let { successes, failures } = await catcherController.processEdits();
-//   let endTime = new Date();
-//   let elapsedTime = (endTime - startTime) / 1000;
-//   res.render('output.ejs', {
-//     successes: successes,
-//     failures: failures,
-//     elapsedTime: elapsedTime,
-//     batch: req.body,
-//   });
-// });
-
 app.post('/formsubmit', async (req, res) => {
   Logger.log('POST /formsubmit');
   Logger.log('form submit body', req.body);
+  await db.connect();
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
   const timeEstimate = await catcherController.getTimeEstimate();
@@ -54,20 +38,24 @@ app.post('/formsubmit', async (req, res) => {
   details.timeEstimate = timeEstimate.time;
   res.render('confirm.ejs', { details: details, defaults: defaults });
   let { successes, failures } = await catcherController.processEdits();
+  // await db.disconnect();
 });
 
 app.post('/estimate', async (req, res) => {
   Logger.log('POST /estimate');
   Logger.log('estimate body', req.body);
+  await db.connect();
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
   const timeEstimate = await catcherController.getTimeEstimate();
   let responseJson = { timeEstimate: timeEstimate };
   res.json(responseJson);
+  // await db.disconnect();
 });
 
 app.get('/logs', async (req, res) => {
   Logger.log('GET /logs');
+  await db.connect();
   const transactions = await transactionsApi.getBatches();
   const batches = await batchApi.getBatches();
   // res.send(transactions);
@@ -76,11 +64,12 @@ app.get('/logs', async (req, res) => {
     batches: batches,
     defaults: defaults,
   });
-  // res.json(transactions);
+  // await db.disconnect();
 });
 
 app.get('/logs/:id', async (req, res) => {
   Logger.log(`GET /logs/${req.params.id}`);
+  await db.connect();
   let referer = req.get('Referrer');
   Logger.log('referer', referer);
   let fromSubmit = false;
@@ -114,16 +103,20 @@ app.get('/logs/:id', async (req, res) => {
     defaults,
     msgs,
   });
+  // await db.disconnect();
 });
 
 app.post('/logs/search/', async (req, res) => {
   Logger.log('POST /logs/search');
+  await db.connect();
   const results = await transactionsApi.findInQuery(req.body.query);
   res.render('search', { query: req.body.query, results: results, defaults });
+  // await db.disconnect();
 });
 
 app.get('/logs/check/:id', async (req, res) => {
   Logger.log(`GET /logs/check/${req.params.id}`);
+  await db.connect();
   // returns true if success value set, can be zero
   const batchArr = await batchApi.getBatch(req.params.id);
   if (batchArr === false || batchArr.length === 0) {
@@ -132,11 +125,14 @@ app.get('/logs/check/:id', async (req, res) => {
     const batch = batchArr[0];
     Logger.log(batch);
     if (typeof batch.successes === 'undefined') {
-      res.send({ complete: false, message: 'Batch not complete' });
+      returnObj = { complete: false, message: 'Batch not complete' };
     } else {
-      res.send({ complete: true });
+      returnObj = { complete: true };
     }
+    Logger.log(returnObj);
+    res.send(returnObj);
   }
+  // await db.disconnect();
 });
 
 app.listen(port, () => {
