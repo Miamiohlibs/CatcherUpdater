@@ -8,9 +8,11 @@ const Logger = console; //require(approot + '/helpers/Logger');
 module.exports = class BatchApi {
   async getBatches() {
     try {
-      await db.connect();
+      // await db.connect();
+      Logger.log('getting batches');
       let batches = await Crud.find();
-      await db.disconnect();
+      Logger.log('got # batches', batches.length);
+      // await db.disconnect();
       return batches;
     } catch (err) {
       Logger.error({
@@ -24,9 +26,11 @@ module.exports = class BatchApi {
 
   async getBatch(batchId) {
     try {
-      await db.connect();
+      // await db.connect();
+      Logger.log('getting batchId', batchId);
       let batch = await Crud.find({ batchId });
-      await db.disconnect();
+      Logger.log('batch', batch);
+      // await db.disconnect();
       return batch;
     } catch (err) {
       Logger.error({
@@ -40,9 +44,10 @@ module.exports = class BatchApi {
 
   async insertBatch(batch) {
     try {
-      await db.connect();
+      // await db.connect();
+      Logger.log('inserting batch', batch);
       await Crud.create(batch);
-      await db.disconnect();
+      // await db.disconnect();
       Logger.log('Batch saved');
       return true;
     } catch (err) {
@@ -57,13 +62,17 @@ module.exports = class BatchApi {
 
   async updateBatch(batchId, updates) {
     try {
-      await db.connect();
+      // await db.connect();
+      Logger.log('updating batch', batchId, updates);
       let res = await Crud.updateOne(
         { batchId: batchId },
         { $set: { ...updates } },
         { upsert: false }
       );
-      await db.disconnect();
+      Logger.log('batch update results:', res);
+      {
+      }
+      // await db.disconnect();
       if (res.acknowledged) {
         Logger.log('Batch updated');
         return true;
