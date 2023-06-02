@@ -1,5 +1,7 @@
 const dotenv = require('dotenv').config();
 const helmet = require('helmet');
+const https = require('https');
+const fs = require('fs');
 const TransactionsApi = require('./models/transactions/TransactionApi');
 const transactionsApi = new TransactionsApi();
 const BatchApi = require('./models/batches/BatchApi');
