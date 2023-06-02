@@ -1,4 +1,5 @@
 const soap = require('soap');
+const Logger = require('../utilities/Logger');
 
 class CatcherSoap {
   constructor(conf) {
@@ -59,8 +60,16 @@ class CatcherSoap {
         client.processCONTENTdm(args, function (err, result) {
           // console.log(result);
           if (result.return.includes('Error')) {
+            Logger.error({
+              message: 'Soap Request failed: ' + result.return,
+              query: querySummary,
+            });
             return reject({ msg: result.return, query: querySummary });
           } else {
+            Logger.debug({
+              message: 'SOAP query success: ' + result.return,
+              query: querySummary,
+            });
             return resolve({ msg: result.return, query: querySummary });
           }
         });

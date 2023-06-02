@@ -45,5 +45,14 @@
                 "useUnifiedTopology": true
             }
         }
+    },
+    "logLevels": {
+        "error": "daily",
+        "warn": "false",
+        "info": "monthly",
+        "http": "false",
+        "verbose": "false",
+        "debug": "daily",
+        "silly": "false"
     }
 }
