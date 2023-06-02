@@ -9,7 +9,9 @@ const fetchGoogleData = async (sheetId) => {
   try {
     const response = await axios.get(url);
     if (response.headers['content-type'] != 'text/csv') {
-      throw new Error('Google did not return CSV data');
+      throw new Error(
+        'Google did not return CSV data. May need increase permissions on Google Sheet.'
+      );
     }
     const csvData = response.data;
     Logger.debug({
