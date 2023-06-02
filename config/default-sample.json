@@ -5,7 +5,20 @@
         "fieldLabelInSheet": "Identifier",
         "cdmAlias": "/yourCdmCollectionSlug",
         "user": "yourUser",
-        "cdmAdminUrl": "https://server17240.contentdm.oclc.org/cgi-bin/admin/start.exe"
+        "cdmAdminUrl": "https://server17240.contentdm.oclc.org/cgi-bin/admin/start.exe",
+        "onServer": false
+    },
+    "server": {
+        "hostname": "fully-qualified.domain.org",
+        "key": "/path/to/cert.key",
+        "cert": "/path/to/cert.crt",
+        "csp": {
+            "note": "Content Security Policy (CSP) is a computer security standard introduced to prevent cross-site scripting (XSS) attacks. Add to the following all servers from which your local settings will call scripts, etc.. This may include Google Analytics, LibCal, LibGuides, and other sources. Include just the fully qualified domains as an array of strings",
+            "defaultSrcAdditions": [],
+            "scriptSrcAdditions": [],
+            "imgSrcAdditions": [],
+            "frameSrcAdditions": []
+        }
     },
     "catcher": {
         "licenseCode": "your-cdm-licenseCode",

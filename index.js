@@ -1,4 +1,7 @@
 const dotenv = require('dotenv').config();
+const helmet = require('helmet');
+const https = require('https');
+const fs = require('fs');
 const TransactionsApi = require('./models/transactions/TransactionApi');
 const transactionsApi = new TransactionsApi();
 const BatchApi = require('./models/batches/BatchApi');
@@ -7,9 +10,18 @@ const config = require('config');
 const defaults = config.get('defaults');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 const Logger = console; //require('./helpers/Logger');
 const db = require('./utilities/database');
+
+/* content secuirity policy and related headers */
+const cspPolicy = require('./utilities/contentSecurityPolicy');
+app.use(helmet.frameguard());
+app.use(helmet.contentSecurityPolicy({ directives: cspPolicy }));
+
+global.onServer =
+  config.has('defaults.onServer') && config.get('defaults.onServer') === true;
+Logger.debug('On Server: ' + global.onServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -135,6 +147,26 @@ app.get('/logs/check/:id', async (req, res) => {
   // await db.disconnect();
 });
 
-app.listen(port, () => {
-  Logger.log(`Catcher app listening at http://localhost:${port}`);
-});
+if (global.onServer === true) {
+  const server = config.get('server');
+
+  https
+    .createServer(
+      {
+        key: fs.readFileSync(server.key),
+        cert: fs.readFileSync(server.cert),
+      },
+      app
+    )
+    .listen(PORT, function () {
+      console.log(
+        `Catcher app listening on port ${PORT}! Go to https://${server.hostname}:${PORT}/`
+      );
+    });
+} else {
+  app.listen(PORT, function () {
+    console.log(
+      `Catcher app listening on port ${PORT}! Go to http://localhost:${PORT}/`
+    );
+  });
+}
