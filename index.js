@@ -8,7 +8,7 @@ const config = require('config');
 const defaults = config.get('defaults');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 const Logger = console; //require('./helpers/Logger');
 const db = require('./utilities/database');
 
@@ -145,6 +145,26 @@ app.get('/logs/check/:id', async (req, res) => {
   // await db.disconnect();
 });
 
-app.listen(port, () => {
-  Logger.log(`Catcher app listening at http://localhost:${port}`);
-});
+if (global.onServer === true) {
+  const server = config.get('server');
+
+  https
+    .createServer(
+      {
+        key: fs.readFileSync(server.key),
+        cert: fs.readFileSync(server.cert),
+      },
+      app
+    )
+    .listen(PORT, function () {
+      console.log(
+        `Catcher app listening on port ${PORT}! Go to https://${server.hostname}:${PORT}/`
+      );
+    });
+} else {
+  app.listen(PORT, function () {
+    console.log(
+      `Catcher app listening on port ${PORT}! Go to http://localhost:${PORT}/`
+    );
+  });
+}
