@@ -8,6 +8,11 @@ const fetchGoogleData = async (sheetId) => {
     'https://docs.google.com/spreadsheets/d/' + sheetId + '/export?format=csv';
   try {
     const response = await axios.get(url);
+    if (response.headers['content-type'] != 'text/csv') {
+      throw new Error(
+        'Google did not return CSV data. May need increase permissions on Google Sheet.'
+      );
+    }
     const csvData = response.data;
     Logger.debug({
       message: 'received CSV data from Google',
@@ -28,12 +33,14 @@ const fetchGoogleData = async (sheetId) => {
     });
     return { success: true, data: parsedData };
   } catch (error) {
+    let errorMessage =
+      error.message || error.response.status + ' ' + error.response.statusText;
     Logger.error({
-      message: 'Error retrieving Google data:' + error.response.statusText,
+      message: 'Error retrieving Google data:' + errorMessage,
     });
     return {
       success: false,
-      error: `${error.response.status} ${error.response.statusText}`,
+      error: `${errorMessage}`,
     };
   }
 };
