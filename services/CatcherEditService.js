@@ -64,7 +64,7 @@ class CatcherEditService {
     } else {
       this.errors.push({
         message:
-          `Error fetching Google Sheet data with id:<br>${this.sheetId}<br><br> ` +
+          `Error fetching Google Sheet data with id:<br><a href="https://docs.google.com/spreadsheets/d/${this.sheetId}">${this.sheetId}</a><br><br> ` +
           res.error,
         hint: 'Check that the sheet id is correct and that sheet is shared with anyone with the URL.',
       });
