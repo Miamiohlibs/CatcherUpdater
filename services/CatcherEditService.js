@@ -9,11 +9,12 @@ const batchApi = new BatchApi();
 const CatcherSoap = require('../models/CatcherSoap');
 const catcherConf = config.get('catcher');
 const catcher = new CatcherSoap(catcherConf);
+const Logger = require('../utilities/Logger');
 
 class CatcherEditService {
   constructor(setup) {
     this.batchId = new Date().getTime().toString();
-    console.log('batchId', this.batchId, typeof this.batchId);
+    Logger.debug('batchId', this.batchId, typeof this.batchId);
     this.mode = setup.mode;
     this.user = setup.user;
     this.sheetId = setup.sheetId;
@@ -59,7 +60,7 @@ class CatcherEditService {
     let res = await fetchGoogleData(this.sheetId);
     if (res.success) {
       this.data = res.data;
-      // console.log('Google Sheet data', this.data);
+      // Logger.debug('Google Sheet data', this.data);
     } else {
       this.errors.push({
         message:
@@ -67,7 +68,7 @@ class CatcherEditService {
           res.error,
         hint: 'Check that the sheet id is correct and that sheet is shared with anyone with the URL.',
       });
-      console.log('error fetching Google sheet:', res.error);
+      Logger.error('error fetching Google sheet:', res.error);
     }
     return;
   }
@@ -84,12 +85,12 @@ class CatcherEditService {
       this.firstRowIndex = this.firstSheetRow - 2;
       this.data = this.data.filter((row) => row.index >= this.firstRowIndex);
     }
-    // console.log('after first row filter', this.data.length);
+    // Logger.debug('after first row filter', this.data.length);
     if (this.lastSheetRow !== undefined) {
       this.lastRowIndex = this.lastSheetRow - 2;
       this.data = this.data.filter((row) => row.index <= this.lastRowIndex);
     }
-    // console.log('after last row filter', this.data.length);
+    // Logger.debug('after last row filter', this.data.length);
     // filter data by CdM number
     if (this.firstCdmNumber !== undefined) {
       this.data = this.data.filter(
@@ -106,7 +107,7 @@ class CatcherEditService {
 
   async sendCatcherRequests() {
     await asyncForEach(this.data, async (row) => {
-      // console.log(row[this.fieldLabelInSheet]);
+      // Logger.debug(row[this.fieldLabelInSheet]);
       let cdmNumber = row['CONTENTdm number'];
       this.allCdms.push(cdmNumber);
       let value = row[this.fieldLabelInSheet];
@@ -126,7 +127,7 @@ class CatcherEditService {
           res.msg = catcher.cleanSoapResponse(res.msg);
         }
         this.successes.push(res);
-        // console.log(colors.green('success', res));
+        // Logger.debug(colors.green('success', res));
       } catch (err) {
         this.failures.push(err);
       }
@@ -157,18 +158,18 @@ class CatcherEditService {
       await transactionApi.insertMany(this.successes);
       await transactionApi.insertMany(this.failures);
       let allRecords = this.successes.concat(this.failures);
-      // console.log('this.successes', this.successes);
-      // console.log('this.failures', this.failures);
-      // console.log('allCdms', this.allCdms);
+      // Logger.debug('this.successes', this.successes);
+      // Logger.debug('this.failures', this.failures);
+      // Logger.debug('allCdms', this.allCdms);
       if (this.firstCdmNumber === undefined) {
         this.firstCdmNumber = Math.min(...this.allCdms);
       }
       if (this.lastCdmNumber === undefined) {
         this.lastCdmNumber = Math.max(...this.allCdms);
       }
-      // console.log('firstCdmNumber', this.firstCdmNumber);
-      // console.log('lastCdmNumber', this.lastCdmNumber);
-      // console.log(`line 160: ${this.batchId}`.red, typeof this.batchId);
+      // Logger.debug('firstCdmNumber', this.firstCdmNumber);
+      // Logger.debug('lastCdmNumber', this.lastCdmNumber);
+      // Logger.debug(`line 160: ${this.batchId}`.red, typeof this.batchId);
       await batchApi.updateBatch(this.batchId, {
         successes: this.successes.length,
         failures: this.failures.length,
@@ -180,15 +181,15 @@ class CatcherEditService {
   }
 
   // logResponseToConsole() {
-  //   console.log(' Successes '.green.inverse);
-  //   console.log(this.successes);
-  //   console.log('-------------------');
-  //   console.log(' Failures '.yellow.inverse);
-  //   console.log(this.failures);
-  //   console.log('-------------------');
-  //   console.log(' Summary '.blue.inverse);
-  //   console.log(`Successes: ${this.successes.length}`.green);
-  //   console.log(`Failures: ${this.failures.length}`.yellow);
+  //   Logger.debug(' Successes '.green.inverse);
+  //   Logger.debug(this.successes);
+  //   Logger.debug('-------------------');
+  //   Logger.debug(' Failures '.yellow.inverse);
+  //   Logger.debug(this.failures);
+  //   Logger.debug('-------------------');
+  //   Logger.debug(' Summary '.blue.inverse);
+  //   Logger.debug(`Successes: ${this.successes.length}`.green);
+  //   Logger.debug(`Failures: ${this.failures.length}`.yellow);
   //   process.exit();
   // }
 }

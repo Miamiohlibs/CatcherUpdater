@@ -11,7 +11,7 @@ const defaults = config.get('defaults');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const Logger = console; //require('./helpers/Logger');
+const Logger = require('./utilities/Logger');
 const db = require('./utilities/database');
 
 /* content secuirity policy and related headers */
@@ -31,13 +31,13 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  Logger.log('GET /');
+  Logger.debug('GET /');
   res.render('index.ejs', { defaults: defaults });
 });
 
 app.post('/formsubmit', async (req, res) => {
-  Logger.log('POST /formsubmit');
-  Logger.log('form submit body', req.body);
+  Logger.debug('POST /formsubmit');
+  Logger.debug('form submit body', req.body);
   await db.connect();
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
@@ -54,8 +54,8 @@ app.post('/formsubmit', async (req, res) => {
 });
 
 app.post('/estimate', async (req, res) => {
-  Logger.log('POST /estimate');
-  Logger.log('estimate body', req.body);
+  Logger.debug('POST /estimate');
+  Logger.debug('estimate body', req.body);
   await db.connect();
   const CatcherController = require('./controllers/CatcherController');
   const catcherController = new CatcherController(req);
@@ -66,7 +66,7 @@ app.post('/estimate', async (req, res) => {
 });
 
 app.get('/logs', async (req, res) => {
-  Logger.log('GET /logs');
+  Logger.debug('GET /logs');
   await db.connect();
   const transactions = await transactionsApi.getBatches();
   const batches = await batchApi.getBatches();
@@ -80,10 +80,10 @@ app.get('/logs', async (req, res) => {
 });
 
 app.get('/logs/:id', async (req, res) => {
-  Logger.log(`GET /logs/${req.params.id}`);
+  Logger.debug(`GET /logs/${req.params.id}`);
   await db.connect();
   let referer = req.get('Referrer');
-  Logger.log('referer', referer);
+  Logger.debug('referer', referer);
   let fromSubmit = false;
   let msgs = [];
   let successes = [];
@@ -91,7 +91,7 @@ app.get('/logs/:id', async (req, res) => {
   if (typeof referer !== 'undefined' && referer.match(/formsubmit/)) {
     fromSubmit = true;
   }
-  Logger.log('fromSubmit', fromSubmit); // true if coming from a form submit
+  Logger.debug('fromSubmit', fromSubmit); // true if coming from a form submit
   const transactions = await transactionsApi.getBatch(req.params.id);
   if (!Array.isArray(transactions)) {
     msgs.push({
@@ -119,7 +119,7 @@ app.get('/logs/:id', async (req, res) => {
 });
 
 app.post('/logs/search/', async (req, res) => {
-  Logger.log('POST /logs/search');
+  Logger.debug('POST /logs/search');
   await db.connect();
   const results = await transactionsApi.findInQuery(req.body.query);
   res.render('search', { query: req.body.query, results: results, defaults });
@@ -127,7 +127,7 @@ app.post('/logs/search/', async (req, res) => {
 });
 
 app.get('/logs/check/:id', async (req, res) => {
-  Logger.log(`GET /logs/check/${req.params.id}`);
+  Logger.debug(`GET /logs/check/${req.params.id}`);
   await db.connect();
   // returns true if success value set, can be zero
   const batchArr = await batchApi.getBatch(req.params.id);
@@ -135,13 +135,13 @@ app.get('/logs/check/:id', async (req, res) => {
     res.send({ complete: false, message: 'Batch not found' });
   } else {
     const batch = batchArr[0];
-    Logger.log(batch);
+    Logger.debug(batch);
     if (typeof batch.successes === 'undefined') {
       returnObj = { complete: false, message: 'Batch not complete' };
     } else {
       returnObj = { complete: true };
     }
-    Logger.log(returnObj);
+    Logger.debug(returnObj);
     res.send(returnObj);
   }
   // await db.disconnect();
