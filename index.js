@@ -1,4 +1,5 @@
 const dotenv = require('dotenv').config();
+const helmet = require('helmet');
 const TransactionsApi = require('./models/transactions/TransactionApi');
 const transactionsApi = new TransactionsApi();
 const BatchApi = require('./models/batches/BatchApi');
@@ -10,6 +11,15 @@ const app = express();
 const port = process.env.PORT || 5000;
 const Logger = console; //require('./helpers/Logger');
 const db = require('./utilities/database');
+
+/* content secuirity policy and related headers */
+const cspPolicy = require('./utilities/contentSecurityPolicy');
+app.use(helmet.frameguard());
+app.use(helmet.contentSecurityPolicy({ directives: cspPolicy }));
+
+global.onServer =
+  config.has('defaults.onServer') && config.get('defaults.onServer') === true;
+Logger.debug('On Server: ' + global.onServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
