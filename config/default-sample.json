@@ -1,4 +1,5 @@
 {
+    "allowedUsersCommaSeparated": "root,someotheruser",
     "defaults": {
         "sheetId": "insertLonga1ph4num3r1c-str1n6",
         "cdmField": "identi",

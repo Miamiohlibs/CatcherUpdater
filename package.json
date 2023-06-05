@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js --name=CatcherUpdater",
     "test": "jest"
   },
   "author": "",
