@@ -53,7 +53,8 @@ if [ $DO_RESTART = true ]; then
     # printf "${YELLOW}\nRUNNING PREFLIGHT CHECK...${NC}\n";
     # npm run check
     printf "${YELLOW}\nRESTARTING SERVER...${NC}\n";
-    npm run start > /dev/null 2>&1 &
+     node index --name=CatcherUpdater > /dev/null 2>&1 &
+    #npm run start > /dev/null 2>&1 &
 else 
     printf "restart server with: ${CYAN}./killapp -r${NC}\n\n"
 fi
