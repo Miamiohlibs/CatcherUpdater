@@ -18,8 +18,9 @@
             <%- include ('partials/timer', {timeEstimate: details.timeEstimate}) %>
             <script>
                 setInterval(async function() {
-                   let res = await fetch('http://localhost:3000/logs/check/<%= details.batchId %>');
+                   let res = await fetch(window.location.protocol + "//" + window.location.host + '/logs/check/<%= details.batchId %>');
                    let json = await res.json();
+                   console.log('checking for log completion', json)
                    if (json.complete) {
                         window.location.href = '/logs/<%= details.batchId %>';
                     } 
